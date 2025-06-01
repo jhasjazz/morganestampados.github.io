@@ -24,7 +24,7 @@
       <a href="#personaliza" class="hover:underline">Personaliza</a>
       <a href="#contacto" class="hover:underline">Contacto</a>
       <a href="#pagos" class="hover:underline">Pagos</a>
-      <a href="#carrito" class="hover:underline">Carrito</a>
+      <a href="carro.html" class="hover:underline">Carrito</a>
       <a href="#compras" class="hover:underline">Mis Compras</a>
       <button id="loginBtn" class="bg-white text-red-700 px-2 py-1 rounded">Login Google</button>
     </nav>
@@ -53,12 +53,7 @@
       const carrito = [];
       function agregarAlCarrito(nombre, precio) {
         carrito.push({ nombre, precio });
-        actualizarCarrito();
-      }
-      function actualizarCarrito() {
-        const lista = document.getElementById("lista-carrito");
-        if (!lista) return;
-        lista.innerHTML = carrito.map(p => `<li class='border-b py-1'>${p.nombre} - $${p.precio}</li>`).join("");
+        localStorage.setItem('carrito', JSON.stringify(carrito));
       }
       document.addEventListener("DOMContentLoaded", () => {
         const catalogo = document.getElementById("catalogo-grid");
@@ -80,12 +75,6 @@
         }
       });
     </script>
-  </section>
-
-  <!-- Sección Carrito -->
-  <section id="carrito" class="p-6 bg-gray-200">
-    <h2 class="text-2xl font-bold text-center mb-4">Tu Carrito</h2>
-    <ul id="lista-carrito" class="max-w-xl mx-auto bg-white p-4 rounded shadow"></ul>
   </section>
 
   <!-- Sección Mis Compras -->
