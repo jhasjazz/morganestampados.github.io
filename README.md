@@ -30,11 +30,11 @@
     <h1 class="text-2xl font-bold">Morgan Estampados</h1>
     <nav class="space-x-4 flex items-center relative">
       <a href="#catalogo" class="hover:underline">Inicio</a>
-      <a href="#personaliza" class="hover:underline">Personaliza</a>
-      <a href="#contacto" class="hover:underline">Contacto</a>
-      <a href="#pagos" class="hover:underline">Pagos</a>
+      <a href="#personaliza.html" class="hover:underline">Personaliza</a>
+      <a href="#contacto.html" class="hover:underline">Contacto</a>
+      <a href="#pagos.html" class="hover:underline">Pagos</a>
       <a href="carro.html" class="hover:underline">Carrito</a>
-      <a href="#compras" class="hover:underline">Mis Compras</a>
+      <a href="#compras.html" class="hover:underline">Mis Compras</a>
       <button id="loginBtn" class="bg-white text-red-700 px-2 py-1 rounded">Login Google</button>
       <div id="userDropdown" class="relative hidden">
         <div id="userCircle" class="w-8 h-8 rounded-full bg-white text-red-700 font-bold flex items-center justify-center cursor-pointer"></div>
