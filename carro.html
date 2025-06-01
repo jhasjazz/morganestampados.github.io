@@ -3,78 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tu Carrito - Morgan Estampados</title>
+  <title>Carrito - Morgan Estampados</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-900 p-6">
-  <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- Sección principal -->
-    <div class="lg:col-span-2">
-      <div class="flex justify-between mb-4">
-        <a href="https://jhasjazz.github.io/morganestampados.github.io/" class="text-blue-600 hover:underline">← Regresar al inicio</a>
-      </div>
-      <h1 class="text-3xl font-bold text-center mb-6">Tu Carrito</h1>
-      <ul id="lista-carrito" class="bg-white p-4 rounded shadow space-y-2"></ul>
-      <div class="mt-4">
-        <p class="text-right text-xl font-bold">Total: <span id="total">$0</span></p>
-      </div>
-      <div class="mt-6 text-center">
-        <a href="https://jhasjazz.github.io/morganestampados.github.io/" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded">Seguir comprando</a>
-      </div>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  <header class="bg-red-700 text-white p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Carrito de Compras</h1>
+    <button onclick="window.location.href='https://jhasjazz.github.io/morganestampados.github.io/'" class="bg-white text-red-700 px-4 py-2 rounded">Regresar al inicio</button>
+  </header>
+
+  <main class="flex flex-1 p-6 gap-6">
+    <!-- Lista del carrito -->
+    <div class="w-2/3 bg-white p-4 rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">Productos en el Carrito</h2>
+      <ul id="lista-carrito" class="space-y-4"></ul>
+      <p class="mt-6 text-lg font-bold">Total: $<span id="total-carrito">0</span></p>
+      <button onclick="window.location.href='https://jhasjazz.github.io/morganestampados.github.io/'" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded">Seguir comprando</button>
     </div>
 
-    <!-- Sección lateral -->
-    <div class="bg-white p-6 rounded shadow h-fit">
-      <h2 class="text-2xl font-bold mb-4">Continuar compra</h2>
-      <button id="boton-pagar" class="bg-green-600 hover:bg-green-700 text-white w-full py-3 rounded text-lg font-semibold">Pagar</button>
-    </div>
-  </div>
+    <!-- Sidebar de acciones -->
+    <aside class="w-1/3 bg-white p-4 rounded shadow">
+      <h3 class="text-xl font-semibold mb-4">Continuar Compra</h3>
+      <button id="btn-pagar" class="bg-green-600 text-white px-4 py-2 rounded w-full">Pagar $0</button>
+    </aside>
+  </main>
 
   <script>
     const lista = document.getElementById("lista-carrito");
-    const totalSpan = document.getElementById("total");
-    const botonPagar = document.getElementById("boton-pagar");
-
-    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    const totalSpan = document.getElementById("total-carrito");
+    const btnPagar = document.getElementById("btn-pagar");
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
     function renderizarCarrito() {
-      let total = 0;
       lista.innerHTML = '';
-
-      carrito.forEach((p, index) => {
-        const item = document.createElement("li");
-        item.className = "flex items-center justify-between border-b py-2 transition-opacity";
-        item.innerHTML = `
-          <div class="flex items-center gap-2">
-            <input type="checkbox" class="seleccionado" data-index="${index}" checked>
-            <span>${p.nombre} - $${p.precio}</span>
-          </div>
+      carrito.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = "flex items-center gap-4 p-2 border rounded";
+        li.innerHTML = `
+          <input type="checkbox" class="seleccionar" data-index="${index}" checked>
+          <span class="flex-1">${item.nombre}</span>
+          <input type="number" min="1" value="${item.cantidad || 1}" class="cantidad w-16 border rounded p-1" data-index="${index}">
+          <span>$${item.precio}</span>
         `;
-        lista.appendChild(item);
+        lista.appendChild(li);
       });
-
       actualizarTotal();
     }
 
     function actualizarTotal() {
-      let suma = 0;
-      const checks = document.querySelectorAll(".seleccionado");
+      let total = 0;
+      const checks = document.querySelectorAll('.seleccionar');
       checks.forEach((check, i) => {
-        const item = lista.children[i];
+        const cantidadInput = document.querySelectorAll('.cantidad')[i];
+        const cantidad = parseInt(cantidadInput.value);
+        carrito[i].cantidad = cantidad;
         if (check.checked) {
-          suma += carrito[i].precio;
-          item.style.opacity = 1;
+          total += carrito[i].precio * cantidad;
+          check.closest('li').classList.remove('opacity-40');
         } else {
-          item.style.opacity = 0.4;
+          check.closest('li').classList.add('opacity-40');
         }
       });
-      totalSpan.textContent = `$${suma}`;
-      botonPagar.textContent = `Pagar $${suma}`;
+      totalSpan.textContent = total;
+      btnPagar.textContent = `Pagar $${total}`;
+      localStorage.setItem('carrito', JSON.stringify(carrito));
     }
 
-    lista.addEventListener("change", actualizarTotal);
-
-    renderizarCarrito();
+    lista.addEventListener('change', actualizarTotal);
+    document.addEventListener('DOMContentLoaded', renderizarCarrito);
   </script>
 </body>
 </html>
