@@ -15,7 +15,6 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.3; }
     }
-
     button, a, img {
       transition: transform 0.2s ease-in-out;
     }
