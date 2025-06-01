@@ -15,10 +15,18 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.3; }
     }
+
+    /* Animación global para botones, imágenes y enlaces */
+    button, a, img {
+      transition: transform 0.2s ease-in-out;
+    }
+    button:hover, a:hover, img:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body class="text-gray-900 relative">
-  <!-- Barra de navegación -->
+  <!-- Header -->
   <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
     <h1 class="text-2xl font-bold">Morgan Estampados</h1>
     <nav class="space-x-4 flex items-center relative">
@@ -28,15 +36,16 @@
       <a href="#pagos" class="hover:underline">Pagos</a>
       <a href="carro.html" class="hover:underline">Carrito</a>
       <a href="#compras" class="hover:underline">Mis Compras</a>
+
+      <!-- Botón Login -->
       <button id="loginBtn" class="bg-white text-red-700 px-2 py-1 rounded">Login Google</button>
 
-      <!-- Botón de usuario -->
-      <div id="userCircle" class="hidden w-8 h-8 rounded-full bg-white text-red-700 font-bold flex items-center justify-center cursor-pointer relative">
-        U
-        <!-- Menú desplegable -->
-        <div id="userMenu" class="hidden absolute top-10 right-0 bg-white text-red-700 border rounded shadow z-50">
+      <!-- Usuario Logueado -->
+      <div id="userDropdown" class="relative hidden">
+        <div id="userCircle" class="w-8 h-8 rounded-full bg-white text-red-700 font-bold flex items-center justify-center cursor-pointer"></div>
+        <div id="userMenu" class="absolute right-0 mt-2 w-40 bg-white text-red-700 rounded shadow-lg hidden z-50">
           <a href="usuario.html" class="block px-4 py-2 hover:bg-gray-100">Editar usuario</a>
-          <button id="logoutBtn" class="w-full text-left px-4 py-2 hover:bg-gray-100">Cerrar sesión</button>
+          <button id="logoutBtn" class="block w-full text-left px-4 py-2 hover:bg-gray-100">Cerrar sesión</button>
         </div>
       </div>
     </nav>
@@ -47,20 +56,20 @@
     <p>“¡Arrrr! Que tu estilo navegue con nosotros, marinero del diseño.”</p>
   </section>
 
-  <!-- Catálogo de productos -->
+  <!-- Catálogo -->
   <section id="catalogo" class="p-6">
     <h2 class="text-3xl font-semibold text-center mb-6">Catálogo de Productos</h2>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="catalogo-grid"></div>
   </section>
 
-  <!-- Botón flotante de WhatsApp -->
+  <!-- WhatsApp flotante -->
   <a href="https://wa.link/ru46tm" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg parpadea text-xl font-bold">
     📩 Escríbenos por WhatsApp
   </a>
 
-  <!-- Firebase y lógica principal -->
+  <!-- Firebase y Lógica -->
   <script>
-    // CONFIGURACIÓN DE TU PROYECTO FIREBASE
+    // Configuración Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyBCwRVaG0-WUaV2SchY00LlpX_VzGCvj8o",
       authDomain: "morganestampadoslogin.firebaseapp.com",
@@ -75,6 +84,7 @@
 
     const loginBtn = document.getElementById("loginBtn");
     const userCircle = document.getElementById("userCircle");
+    const userDropdown = document.getElementById("userDropdown");
     const userMenu = document.getElementById("userMenu");
     const logoutBtn = document.getElementById("logoutBtn");
 
@@ -87,22 +97,22 @@
           mostrarUsuario(correo);
         })
         .catch(err => {
-          alert("Error al iniciar sesión.");
+          alert("Error al iniciar sesión");
           console.error(err);
         });
     });
 
     function mostrarUsuario(correo) {
       loginBtn.classList.add("hidden");
+      userDropdown.classList.remove("hidden");
       userCircle.textContent = correo.charAt(0).toUpperCase();
-      userCircle.classList.remove("hidden");
     }
 
-    // Renderizar usuario si ya está logueado
     document.addEventListener("DOMContentLoaded", () => {
       const correo = localStorage.getItem("usuarioLogueado");
       if (correo) mostrarUsuario(correo);
 
+      // Render catálogo
       const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
       const catalogo = document.getElementById("catalogo-grid");
 
@@ -144,7 +154,7 @@
         const div = document.createElement('div');
         div.className = "bg-white p-4 rounded shadow flex flex-col items-center";
         div.innerHTML = `
-          <img src="p${i}.jpeg" alt="${nombre}" class="w-full mb-2">
+          <img src="p${i}.jpeg" alt="${nombre}" class="w-full mb-2 rounded">
           <h3 class="font-bold text-center">${nombre}</h3>
           <p>$${precio}</p>
           <div class="flex flex-col mt-2 w-full items-center">
@@ -161,16 +171,14 @@
       }
     });
 
-    // Mostrar / ocultar menú del usuario
     userCircle.addEventListener("click", () => {
       userMenu.classList.toggle("hidden");
     });
 
-    // Cerrar sesión y limpiar localStorage
     logoutBtn.addEventListener("click", () => {
       auth.signOut().then(() => {
         localStorage.clear();
-        userCircle.classList.add("hidden");
+        userDropdown.classList.add("hidden");
         userMenu.classList.add("hidden");
         loginBtn.classList.remove("hidden");
         location.reload();
