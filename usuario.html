@@ -10,7 +10,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-cover bg-no-repeat bg-center text-gray-900" style="background-image: url('fondopagina2.png');">
-
   <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
     <h1 class="text-2xl font-bold">Morgan Estampados</h1>
   </header>
@@ -92,13 +91,15 @@
     async function cargarDirecciones() {
       lista.innerHTML = "";
       const snapshot = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").get();
+      let count = 1;
       snapshot.forEach(doc => {
         const data = doc.data();
         const div = document.createElement("div");
         div.className = "border p-4 rounded bg-gray-100 shadow-md flex flex-col justify-between";
         div.innerHTML = `
           <div class="mb-2">
-            <p class="font-bold text-lg text-red-700">${data.nombre}</p>
+            <p class="font-bold text-lg text-red-700">Dirección ${count}</p>
+            <p class="font-semibold text-sm">${data.nombre}</p>
             <p>${data.direccion} - ${data.indicaciones || 'Sin indicaciones'}</p>
             <p>${data.pais}, ${data.departamento}</p>
             <p class="text-sm text-gray-600">📞 ${data.celular}</p>
@@ -107,6 +108,7 @@
             ${data.predeterminada ? 'Predeterminada ✓' : 'Seleccionar como predeterminada'}
           </button>`;
         lista.appendChild(div);
+        count++;
       });
     }
 
@@ -128,6 +130,5 @@
       window.dispatchEvent(event);
     }
   </script>
-
 </body>
 </html>
