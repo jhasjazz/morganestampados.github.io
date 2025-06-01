@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -46,18 +47,20 @@
       </div>
     </div>
     <script>
-      const catalogo = document.getElementById("catalogo-grid");
-      for(let i=2; i<=20; i++) {
-        const div = document.createElement('div');
-        div.className = "bg-white p-4 rounded shadow";
-        div.innerHTML = `
-          <img src="https://via.placeholder.com/300x300?text=Producto+${i}" alt="Producto ${i}" class="w-full mb-2">
-          <h3 class="font-bold">Producto ${i}</h3>
-          <p>$${20000 + i * 500}</p>
-          <a href="https://wa.link/ru46tm" target="_blank" class="mt-2 inline-block bg-red-700 text-white px-4 py-1 rounded">Pedir</a>
-        `;
-        catalogo.appendChild(div);
-      }
+      document.addEventListener("DOMContentLoaded", () => {
+        const catalogo = document.getElementById("catalogo-grid");
+        for(let i=2; i<=20; i++) {
+          const div = document.createElement('div');
+          div.className = "bg-white p-4 rounded shadow";
+          div.innerHTML = `
+            <img src="https://via.placeholder.com/300x300?text=Producto+${i}" alt="Producto ${i}" class="w-full mb-2">
+            <h3 class="font-bold">Producto ${i}</h3>
+            <p>$${20000 + i * 500}</p>
+            <a href="https://wa.link/ru46tm" target="_blank" class="mt-2 inline-block bg-red-700 text-white px-4 py-1 rounded">Pedir</a>
+          `;
+          catalogo.appendChild(div);
+        }
+      });
     </script>
   </section>
 
@@ -93,7 +96,7 @@
   <section id="pagos" class="p-6 bg-white">
     <h2 class="text-2xl font-bold text-center mb-4">Pagos en Línea</h2>
     <p class="text-center mb-2">Realiza tu pago a través de nuestros métodos autorizados.</p>
-    <div class="flex justify-center space-x-4">
+    <div class="flex flex-wrap justify-center gap-4">
       <a href="#" class="bg-green-600 text-white px-4 py-2 rounded">Nequi</a>
       <a href="#" class="bg-yellow-500 text-white px-4 py-2 rounded">Bancolombia</a>
       <a href="#" class="bg-blue-700 text-white px-4 py-2 rounded">Daviplata</a>
