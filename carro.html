@@ -28,11 +28,26 @@
     </aside>
   </main>
 
+  <!-- Modal de confirmación -->
+  <div id="modal-confirmacion" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded shadow-lg text-center">
+      <p class="mb-4 text-lg">¿Seguro que quieres eliminar el producto seleccionado?</p>
+      <div class="flex justify-center gap-4">
+        <button id="confirmar-eliminacion" class="bg-red-600 text-white px-4 py-2 rounded">Sí</button>
+        <button id="cancelar-eliminacion" class="bg-gray-400 text-white px-4 py-2 rounded">No</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const lista = document.getElementById("lista-carrito");
     const totalSpan = document.getElementById("total-carrito");
     const btnPagar = document.getElementById("btn-pagar");
+    const modal = document.getElementById("modal-confirmacion");
+    const confirmar = document.getElementById("confirmar-eliminacion");
+    const cancelar = document.getElementById("cancelar-eliminacion");
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    let indexAEliminar = null;
 
     function renderizarCarrito() {
       lista.innerHTML = '';
@@ -44,6 +59,9 @@
           <span class="flex-1">${item.nombre}</span>
           <input type="number" min="1" value="${item.cantidad || 1}" class="cantidad w-16 border rounded p-1" data-index="${index}">
           <span>$${item.precio}</span>
+          <button class="eliminar" data-index="${index}">
+            <img src="https://cdn-icons-png.flaticon.com/512/1345/1345874.png" alt="Eliminar" class="w-5 h-5">
+          </button>
         `;
         lista.appendChild(li);
       });
@@ -70,6 +88,28 @@
     }
 
     lista.addEventListener('change', actualizarTotal);
+    lista.addEventListener('click', e => {
+      if (e.target.closest('.eliminar')) {
+        indexAEliminar = parseInt(e.target.closest('.eliminar').dataset.index);
+        modal.classList.remove('hidden');
+      }
+    });
+
+    confirmar.addEventListener('click', () => {
+      if (indexAEliminar !== null) {
+        carrito.splice(indexAEliminar, 1);
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        renderizarCarrito();
+        modal.classList.add('hidden');
+        indexAEliminar = null;
+      }
+    });
+
+    cancelar.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      indexAEliminar = null;
+    });
+
     document.addEventListener('DOMContentLoaded', renderizarCarrito);
   </script>
 </body>
