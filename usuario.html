@@ -3,59 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Datos del Usuario - Morgan Estampados</title>
+  <title>Direcciones - Morgan Estampados</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
-<body class="bg-cover bg-no-repeat bg-center text-gray-900" style="background-image: url('fondopagina2.png');">
+<body class="bg-gray-100 text-gray-900">
 
-  <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
-    <h1 class="text-2xl font-bold">Morgan Estampados</h1>
+  <header class="bg-red-700 text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Morgan Estampados</h1>
+    <button onclick="window.location.href='index.html'" class="bg-white text-red-700 px-3 py-1 rounded font-bold hover:bg-gray-200">Regresar al menú principal</button>
   </header>
 
-  <section class="bg-white p-6 rounded shadow max-w-3xl mx-auto mt-10">
-    <h2 class="text-3xl font-bold text-center text-red-700 mb-4">Información del Usuario</h2>
+  <section class="max-w-3xl mx-auto p-6 bg-white shadow rounded mt-6">
+    <h2 class="text-2xl font-bold text-center text-red-700 mb-4">Formulario de Dirección</h2>
 
-    <form id="form-usuario" class="space-y-4">
-      <div>
-        <label class="block text-sm font-bold text-red-700 mb-1">Nombre completo <span class="text-red-500">*</span></label>
-        <input type="text" id="nombre" required pattern="[a-zA-Z\s]+" title="Solo letras" class="w-full border rounded px-3 py-2" placeholder="Nombre completo">
-      </div>
-      <div>
-        <label class="block text-sm font-bold text-red-700 mb-1">Número de cédula <span class="text-red-500">*</span></label>
-        <input type="text" id="cedula" required pattern="[0-9]+" title="Solo números" class="w-full border rounded px-3 py-2" placeholder="Cédula">
-      </div>
-      <div>
-        <label class="block text-sm font-bold text-red-700 mb-1">Celular <span class="text-red-500">*</span></label>
-        <input type="text" id="celular" required pattern="[0-9]+" title="Solo números" class="w-full border rounded px-3 py-2" placeholder="Celular">
-      </div>
-      <div>
-        <label class="block text-sm font-bold text-red-700 mb-1">País <span class="text-red-500">*</span></label>
-        <input type="text" id="pais" required class="w-full border rounded px-3 py-2" placeholder="País">
-      </div>
-      <div>
-        <label class="block text-sm font-bold text-red-700 mb-1">Departamento <span class="text-red-500">*</span></label>
-        <input type="text" id="departamento" required class="w-full border rounded px-3 py-2" placeholder="Departamento">
-      </div>
-      <div>
-        <label class="block text-sm font-bold text-red-700 mb-1">Dirección completa <span class="text-red-500">*</span></label>
-        <input type="text" id="direccion" required class="w-full border rounded px-3 py-2" placeholder="Dirección">
-      </div>
-      <div>
-        <label class="block text-sm font-bold text-gray-700 mb-1">Indicaciones (opcional)</label>
-        <input type="text" id="indicaciones" class="w-full border rounded px-3 py-2" placeholder="Apartamento, portería, etc.">
-      </div>
-      <button type="submit" class="bg-red-700 text-white px-4 py-2 rounded w-full font-bold hover:scale-110 transition-transform">
-        Guardar dirección
-      </button>
+    <form id="form-direccion" class="space-y-4">
+      <input type="text" id="nombre" required pattern="[a-zA-Z\s]+" title="Solo letras" class="w-full border px-3 py-2 rounded" placeholder="Nombre completo *">
+      <input type="text" id="cedula" required pattern="[0-9]+" title="Solo números" class="w-full border px-3 py-2 rounded" placeholder="Número de cédula *">
+      <input type="text" id="celular" required pattern="[0-9]+" title="Solo números" class="w-full border px-3 py-2 rounded" placeholder="Celular *">
+      <input type="text" id="pais" required class="w-full border px-3 py-2 rounded" placeholder="País *">
+      <input type="text" id="departamento" required class="w-full border px-3 py-2 rounded" placeholder="Departamento *">
+      <input type="text" id="direccion" required class="w-full border px-3 py-2 rounded" placeholder="Dirección completa *">
+      <input type="text" id="indicaciones" class="w-full border px-3 py-2 rounded" placeholder="Indicaciones (opcional)">
+      <button type="submit" class="bg-red-700 text-white w-full py-2 rounded font-bold hover:bg-red-800">Guardar dirección</button>
     </form>
 
-    <p id="estado-usuario" class="text-center mt-2 text-green-700 font-semibold hidden">¡Datos guardados correctamente!</p>
-    <p id="limite-direcciones" class="text-center mt-4 text-sm font-medium text-red-600"></p>
+    <p id="mensaje" class="text-center text-green-600 font-semibold mt-4 hidden">¡Dirección guardada!</p>
+    <p id="limite" class="text-center text-red-600 mt-2 text-sm"></p>
 
-    <div id="botones-direcciones" class="mt-6 flex flex-wrap gap-3 justify-center"></div>
+    <div id="botones-direcciones" class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
   </section>
 
   <script>
@@ -66,25 +44,25 @@
       storageBucket: "morganestampadoslogin.appspot.com",
       messagingSenderId: "807816306056",
       appId: "1:807816306056:web:ac494752760b365e15ae3d",
-      measurementId: "G-WFSFQLM81S"
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    const form = document.getElementById("form-usuario");
-    const estado = document.getElementById("estado-usuario");
-    const botonesDiv = document.getElementById("botones-direcciones");
-    const limiteTexto = document.getElementById("limite-direcciones");
-
+    const form = document.getElementById("form-direccion");
+    const mensaje = document.getElementById("mensaje");
+    const limiteTexto = document.getElementById("limite");
+    const contenedorBotones = document.getElementById("botones-direcciones");
     let usuarioEmail = null;
 
-    auth.onAuthStateChanged(user => {
+    const maxDirecciones = 4;
+
+    auth.onAuthStateChanged(async user => {
       if (user) {
         usuarioEmail = user.email;
-        cargarDirecciones();
+        await renderizarBotones();
       } else {
-        alert("Por favor inicia sesión para acceder a esta página.");
+        alert("Debes iniciar sesión.");
         window.location.href = "index.html";
       }
     });
@@ -92,91 +70,99 @@
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!form.checkValidity()) {
-        alert("Verifica los campos obligatorios. Solo letras en el nombre y solo números en cédula/celular.");
+        alert("Verifica los campos: solo letras en nombre, solo números en cédula y celular.");
         return;
       }
-
-      const nombre = document.getElementById("nombre").value.trim();
-      const cedula = document.getElementById("cedula").value.trim();
-      const celular = document.getElementById("celular").value.trim();
-      const pais = document.getElementById("pais").value.trim();
-      const departamento = document.getElementById("departamento").value.trim();
-      const direccion = document.getElementById("direccion").value.trim();
-      const indicaciones = document.getElementById("indicaciones").value.trim();
 
       const snapshot = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").get();
-      if (snapshot.size >= 4) {
-        alert("Solo puedes tener hasta 4 direcciones guardadas.");
+      if (snapshot.size >= maxDirecciones) {
+        alert("Ya alcanzaste el máximo de 4 direcciones.");
         return;
       }
 
-      await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").add({
-        nombre, cedula, celular, pais, departamento, direccion, indicaciones, predeterminada: false
-      });
+      const data = {
+        nombre: form.nombre.value.trim(),
+        cedula: form.cedula.value.trim(),
+        celular: form.celular.value.trim(),
+        pais: form.pais.value.trim(),
+        departamento: form.departamento.value.trim(),
+        direccion: form.direccion.value.trim(),
+        indicaciones: form.indicaciones.value.trim(),
+        predeterminada: false
+      };
 
+      await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").add(data);
       form.reset();
-      estado.classList.remove("hidden");
-      cargarDirecciones();
+      mensaje.classList.remove("hidden");
+      setTimeout(() => mensaje.classList.add("hidden"), 2000);
+      await renderizarBotones();
     });
 
-    async function cargarDirecciones() {
-      botonesDiv.innerHTML = "";
+    async function renderizarBotones() {
+      contenedorBotones.innerHTML = "";
       const snapshot = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").get();
-      const total = snapshot.size;
-      let index = 1;
-
+      const direcciones = [];
       snapshot.forEach(doc => {
-        const data = doc.data();
-        const btn = document.createElement("div");
-        btn.className = `p-4 bg-white border rounded-lg shadow-md w-full md:w-60 flex flex-col items-center gap-2 ${data.predeterminada ? 'border-green-500' : ''}`;
-
-        btn.innerHTML = `
-          <h3 class="font-bold text-red-700">Dirección ${index}</h3>
-          <p class="text-sm text-center">${data.direccion}<br><span class="text-gray-500 text-xs">${data.indicaciones || 'Sin indicaciones'}</span></p>
-          <p class="text-xs text-center">${data.pais}, ${data.departamento}</p>
-          <p class="text-xs">📞 ${data.celular}</p>
-          <button onclick="marcarPredeterminada('${doc.id}')" class="text-xs px-3 py-1 rounded ${data.predeterminada ? 'bg-green-500 text-white' : 'bg-gray-300 text-black'}">
-            ${data.predeterminada ? '✓ Predeterminada' : 'Elegir como predeterminada'}
-          </button>
-          <button onclick="eliminarDireccion('${doc.id}')" class="text-xs px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
-            Eliminar
-          </button>
-        `;
-        botonesDiv.appendChild(btn);
-        index++;
+        direcciones.push({ id: doc.id, ...doc.data() });
       });
 
-      const restantes = 4 - total;
-      limiteTexto.textContent = restantes > 0
-        ? `Puedes agregar ${restantes} dirección${restantes === 1 ? '' : 'es'} más.`
-        : 'Ya has agregado el máximo de 4 direcciones.';
+      limiteTexto.textContent = direcciones.length < maxDirecciones
+        ? `Puedes agregar ${maxDirecciones - direcciones.length} dirección(es) más.`
+        : "Límite alcanzado.";
+
+      for (let i = 0; i < maxDirecciones; i++) {
+        const caja = document.createElement("div");
+        caja.className = "p-4 border rounded shadow bg-white flex flex-col items-start";
+
+        if (direcciones[i]) {
+          const d = direcciones[i];
+          caja.innerHTML = `
+            <h3 class="font-bold text-red-700 mb-1">Dirección ${i + 1}</h3>
+            <p class="text-sm">${d.nombre}</p>
+            <p class="text-sm">${d.direccion}</p>
+            <p class="text-sm">${d.pais}, ${d.departamento}</p>
+            <p class="text-sm">📞 ${d.celular}</p>
+            <p class="text-xs text-gray-500">${d.indicaciones || 'Sin indicaciones'}</p>
+            <div class="mt-2 flex gap-2">
+              <button onclick="marcarPredeterminada('${d.id}')" class="text-xs px-2 py-1 rounded ${d.predeterminada ? 'bg-green-600 text-white' : 'bg-gray-300 text-black'}">
+                ${d.predeterminada ? '✓ Predeterminada' : 'Elegir como predeterminada'}
+              </button>
+              <button onclick="eliminarDireccion('${d.id}')" class="text-xs px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700">
+                Eliminar
+              </button>
+            </div>
+          `;
+        } else {
+          caja.innerHTML = `
+            <h3 class="font-bold text-red-700 mb-1">Dirección ${i + 1}</h3>
+            <p class="text-sm text-gray-400 italic">Vacía</p>
+          `;
+        }
+
+        contenedorBotones.appendChild(caja);
+      }
     }
 
     window.marcarPredeterminada = async (id) => {
       const snapshot = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").get();
       const batch = db.batch();
       snapshot.forEach(doc => {
-        batch.update(doc.ref, { predeterminada: doc.id === id });
+        const ref = doc.ref;
+        batch.update(ref, { predeterminada: doc.id === id });
       });
       await batch.commit();
 
-      const direccionDoc = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").doc(id).get();
-      const direccionPred = direccionDoc.data();
-      localStorage.setItem("direccionPredeterminada", JSON.stringify(direccionPred));
-
-      const event = new Event("direccionActualizada");
-      window.dispatchEvent(event);
-
-      cargarDirecciones();
+      const doc = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").doc(id).get();
+      localStorage.setItem("direccionPredeterminada", JSON.stringify(doc.data()));
+      await renderizarBotones();
     };
 
     window.eliminarDireccion = async (id) => {
-      if (confirm("¿Eliminar esta dirección?")) {
-        await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").doc(id).delete();
-        cargarDirecciones();
-      }
+      const confirmacion = confirm("¿Deseas eliminar esta dirección?");
+      if (!confirmacion) return;
+      await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").doc(id).delete();
+      await renderizarBotones();
     };
   </script>
-
 </body>
 </html>
