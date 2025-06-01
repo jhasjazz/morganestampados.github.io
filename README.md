@@ -16,12 +16,11 @@
       50% { opacity: 0.3; }
     }
 
-    /* Animación global para botones, imágenes y enlaces */
     button, a, img {
       transition: transform 0.2s ease-in-out;
     }
     button:hover, a:hover, img:hover {
-      transform: scale(1.1);
+      transform: scale(1.15);
     }
   </style>
 </head>
@@ -36,11 +35,7 @@
       <a href="#pagos" class="hover:underline">Pagos</a>
       <a href="carro.html" class="hover:underline">Carrito</a>
       <a href="#compras" class="hover:underline">Mis Compras</a>
-
-      <!-- Botón Login -->
       <button id="loginBtn" class="bg-white text-red-700 px-2 py-1 rounded">Login Google</button>
-
-      <!-- Usuario Logueado -->
       <div id="userDropdown" class="relative hidden">
         <div id="userCircle" class="w-8 h-8 rounded-full bg-white text-red-700 font-bold flex items-center justify-center cursor-pointer"></div>
         <div id="userMenu" class="absolute right-0 mt-2 w-40 bg-white text-red-700 rounded shadow-lg hidden z-50">
@@ -51,25 +46,26 @@
     </nav>
   </header>
 
-  <!-- Frase Pirata -->
   <section class="bg-black text-white text-center p-2 text-lg italic">
-    <p>“¡Arrrr! Que tu estilo navegue con nosotros, marinero del diseño.”</p>
+    <p>
+      “¡Arrrr! Que tu estilo navegue con nosotros, marinero del diseño.”
+    </p>
   </section>
 
-  <!-- Catálogo -->
   <section id="catalogo" class="p-6">
     <h2 class="text-3xl font-semibold text-center mb-6">Catálogo de Productos</h2>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="catalogo-grid"></div>
+    <div class="flex justify-center gap-4 mt-6">
+      <button id="prevPage" class="bg-red-700 text-white px-4 py-2 rounded">Anterior</button>
+      <button id="nextPage" class="bg-red-700 text-white px-4 py-2 rounded">Siguiente</button>
+    </div>
   </section>
 
-  <!-- WhatsApp flotante -->
   <a href="https://wa.link/ru46tm" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg parpadea text-xl font-bold">
     📩 Escríbenos por WhatsApp
   </a>
 
-  <!-- Firebase y Lógica -->
   <script>
-    // Configuración Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyBCwRVaG0-WUaV2SchY00LlpX_VzGCvj8o",
       authDomain: "morganestampadoslogin.firebaseapp.com",
@@ -112,12 +108,15 @@
       const correo = localStorage.getItem("usuarioLogueado");
       if (correo) mostrarUsuario(correo);
 
-      // Render catálogo
-      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      let currentPage = 1;
+      const productosPorPagina = 20;
+      const totalProductos = 60;
+
       const catalogo = document.getElementById("catalogo-grid");
+      const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
       function guardarCarrito() {
-        localStorage.setItem('carrito', JSON.stringify(carrito));
+        localStorage.setItem("carrito", JSON.stringify(carrito));
       }
 
       function obtenerCantidad(nombre) {
@@ -147,28 +146,47 @@
         guardarCarrito();
       }
 
-      for (let i = 1; i <= 20; i++) {
-        const nombre = i === 1 ? "Camiseta Pirata" : `Producto ${i}`;
-        const precio = i === 1 ? 35000 : 20000 + i * 500;
-        const cantidadActual = obtenerCantidad(nombre);
-        const div = document.createElement('div');
-        div.className = "bg-white p-4 rounded shadow flex flex-col items-center";
-        div.innerHTML = `
-          <img src="p${i}.jpeg" alt="${nombre}" class="w-full mb-2 rounded">
-          <h3 class="font-bold text-center">${nombre}</h3>
-          <p>$${precio}</p>
-          <div class="flex flex-col mt-2 w-full items-center">
-            <a href="p${i}.html" class="bg-purple-500 text-white px-4 py-2 rounded text-center mb-2 w-full">Ver detalles</a>
-            <div class="flex items-center gap-2 w-full">
-              <button onclick="agregarAlCarrito('${nombre}', ${precio}, ${i})" class="bg-pink-500 text-white px-4 py-2 rounded w-2/3 text-sm">
-                Añadir al carro ❤️
-              </button>
-              <input type="number" min="1" value="${cantidadActual}" id="contador-${i}" class="w-16 border rounded px-2 py-1 text-center" onchange="actualizarCantidadDesdeInput('${nombre}', this.value, ${i})">
-            </div>
-          </div>
-        `;
-        catalogo.appendChild(div);
+      function renderCatalogo(page) {
+        catalogo.innerHTML = "";
+        const inicio = (page - 1) * productosPorPagina + 1;
+        const fin = Math.min(inicio + productosPorPagina - 1, totalProductos);
+        for (let i = inicio; i <= fin; i++) {
+          const nombre = i === 1 ? "Camiseta Pirata" : `Producto ${i}`;
+          const precio = i === 1 ? 35000 : 20000 + i * 500;
+          const cantidadActual = obtenerCantidad(nombre);
+          const div = document.createElement('div');
+          div.className = "bg-white p-4 rounded shadow flex flex-col items-center";
+          div.innerHTML = `
+            <img src="p${i}.jpeg" alt="${nombre}" class="w-full mb-2 rounded">
+            <h3 class="font-bold text-center">${nombre}</h3>
+            <p>$${precio}</p>
+            <div class="flex flex-col mt-2 w-full items-center">
+              <a href="p${i}.html" class="bg-purple-500 text-white px-4 py-2 rounded text-center mb-2 w-full">Ver detalles</a>
+              <div class="flex items-center gap-2 w-full">
+                <button onclick="agregarAlCarrito('${nombre}', ${precio}, ${i})" class="bg-pink-500 text-white px-4 py-2 rounded w-2/3 text-sm">Añadir al carro ❤️</button>
+                <input type="number" min="1" value="${cantidadActual}" id="contador-${i}" class="w-16 border rounded px-2 py-1 text-center" onchange="actualizarCantidadDesdeInput('${nombre}', this.value, ${i})">
+              </div>
+            </div>`;
+          catalogo.appendChild(div);
+        }
       }
+
+      document.getElementById("prevPage").addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderCatalogo(currentPage);
+        }
+      });
+
+      document.getElementById("nextPage").addEventListener("click", () => {
+        const maxPage = Math.ceil(totalProductos / productosPorPagina);
+        if (currentPage < maxPage) {
+          currentPage++;
+          renderCatalogo(currentPage);
+        }
+      });
+
+      renderCatalogo(currentPage);
     });
 
     userCircle.addEventListener("click", () => {
