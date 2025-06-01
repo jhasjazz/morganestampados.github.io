@@ -2,6 +2,9 @@
   const form = document.getElementById("form-usuario");
   const estado = document.getElementById("estado-usuario");
   const lista = document.getElementById("lista-direcciones");
+  const limiteTexto = document.createElement("p");
+  limiteTexto.className = "text-center mt-2 text-sm font-medium text-red-600";
+  lista.parentElement.appendChild(limiteTexto);
   let usuarioEmail = null;
 
   auth.onAuthStateChanged(user => {
@@ -17,13 +20,19 @@
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nombre = document.getElementById("nombre").value;
-    const cedula = document.getElementById("cedula").value;
-    const celular = document.getElementById("celular").value;
-    const pais = document.getElementById("pais").value;
-    const departamento = document.getElementById("departamento").value;
-    const direccion = document.getElementById("direccion").value;
-    const indicaciones = document.getElementById("indicaciones").value;
+    // Validación manual extra por seguridad
+    const nombre = document.getElementById("nombre").value.trim();
+    const cedula = document.getElementById("cedula").value.trim();
+    const celular = document.getElementById("celular").value.trim();
+    const pais = document.getElementById("pais").value.trim();
+    const departamento = document.getElementById("departamento").value.trim();
+    const direccion = document.getElementById("direccion").value.trim();
+    const indicaciones = document.getElementById("indicaciones").value.trim();
+
+    if (!nombre || !cedula || !celular || !pais || !departamento || !direccion) {
+      alert("Por favor llena todos los campos obligatorios.");
+      return;
+    }
 
     const snapshot = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").get();
     if (snapshot.size >= 4) {
@@ -43,7 +52,9 @@
   async function cargarDirecciones() {
     lista.innerHTML = "";
     const snapshot = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").get();
+    const total = snapshot.size;
     let index = 1;
+
     snapshot.forEach(doc => {
       const data = doc.data();
       const div = document.createElement("div");
@@ -64,6 +75,11 @@
       lista.appendChild(div);
       index++;
     });
+
+    const restantes = 4 - total;
+    limiteTexto.textContent = restantes > 0
+      ? `Puedes agregar ${restantes} dirección${restantes === 1 ? '' : 'es'} más.`
+      : 'Ya has agregado el máximo de 4 direcciones.';
   }
 
   window.marcarPredeterminada = async (id) => {
