@@ -113,7 +113,7 @@
       const totalProductos = 60;
 
       const catalogo = document.getElementById("catalogo-grid");
-      const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+      let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
       function guardarCarrito() {
         localStorage.setItem("carrito", JSON.stringify(carrito));
@@ -124,7 +124,7 @@
         return item ? item.cantidad : 0;
       }
 
-      function agregarAlCarrito(nombre, precio, index) {
+      window.agregarAlCarrito = function(nombre, precio, index) {
         const itemExistente = carrito.find(item => item.nombre === nombre);
         if (itemExistente) {
           itemExistente.cantidad++;
@@ -132,10 +132,11 @@
           carrito.push({ nombre, precio, cantidad: 1 });
         }
         guardarCarrito();
-        document.getElementById(`contador-${index}`).value = obtenerCantidad(nombre);
+        const input = document.getElementById(`contador-${index}`);
+        if (input) input.value = obtenerCantidad(nombre);
       }
 
-      function actualizarCantidadDesdeInput(nombre, valor, index) {
+      window.actualizarCantidadDesdeInput = function(nombre, valor, index) {
         const cantidad = parseInt(valor);
         const item = carrito.find(item => item.nombre === nombre);
         if (item) {
