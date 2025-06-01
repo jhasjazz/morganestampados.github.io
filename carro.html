@@ -74,7 +74,8 @@
       const checks = document.querySelectorAll('.seleccionar');
       checks.forEach((check, i) => {
         const cantidadInput = document.querySelectorAll('.cantidad')[i];
-        const cantidad = parseInt(cantidadInput.value);
+        let cantidad = parseInt(cantidadInput.value);
+        if (isNaN(cantidad) || cantidad < 1) cantidad = 1;
         carrito[i].cantidad = cantidad;
         if (check.checked) {
           total += carrito[i].precio * cantidad;
@@ -87,6 +88,16 @@
       btnPagar.textContent = `Pagar $${total}`;
       localStorage.setItem('carrito', JSON.stringify(carrito));
     }
+
+    lista.addEventListener('input', e => {
+      if (e.target.classList.contains('cantidad')) {
+        const index = parseInt(e.target.dataset.index);
+        const nuevaCantidad = parseInt(e.target.value);
+        carrito[index].cantidad = isNaN(nuevaCantidad) || nuevaCantidad < 1 ? 1 : nuevaCantidad;
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        renderizarCarrito();
+      }
+    });
 
     lista.addEventListener('change', actualizarTotal);
     lista.addEventListener('click', e => {
