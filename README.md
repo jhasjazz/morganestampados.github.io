@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Morgan Estampados</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
+  <style="background-image: url('fondopagina.png'); background-size: cover; background-repeat: no-repeat;">>
     .parpadea {
       animation: blink 1s infinite;
     }
@@ -15,7 +15,7 @@
     }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-gray-100 text-gray-900 >
   <!-- Barra de navegación -->
   <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
     <h1 class="text-2xl font-bold">Morgan Estampados</h1>
