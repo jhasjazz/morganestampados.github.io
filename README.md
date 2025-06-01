@@ -15,7 +15,7 @@
     }
   </style>
 </head>
-<body class="text-gray-900" style="background-image: url('fondopagina.png'); background-size: cover; background-repeat: no-repeat;">
+<body class="text-gray-900">
   <!-- Barra de navegación -->
   <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
     <h1 class="text-2xl font-bold">Morgan Estampados</h1>
