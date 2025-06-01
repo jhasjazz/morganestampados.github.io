@@ -26,6 +26,8 @@
       <a href="#personaliza" class="hover:underline">Personaliza</a>
       <a href="#contacto" class="hover:underline">Contacto</a>
       <a href="#pagos" class="hover:underline">Pagos</a>
+      <a href="#carrito" class="hover:underline">Carrito</a>
+      <a href="#compras" class="hover:underline">Mis Compras</a>
       <button id="loginBtn" class="bg-white text-red-700 px-2 py-1 rounded">Login Google</button>
     </nav>
   </header>
@@ -43,25 +45,49 @@
         <img src="https://via.placeholder.com/300x300?text=Camiseta" alt="Camiseta" class="w-full mb-2">
         <h3 class="font-bold">Camiseta Pirata</h3>
         <p>$35.000</p>
-        <a href="https://wa.link/ru46tm" target="_blank" class="mt-2 inline-block bg-red-700 text-white px-4 py-1 rounded">Pedir</a>
+        <button onclick="agregarAlCarrito('Camiseta Pirata', 35000)" class="bg-blue-700 text-white px-4 py-1 rounded mt-2">Agregar al carrito</button>
       </div>
     </div>
     <script>
+      const carrito = [];
+      function agregarAlCarrito(nombre, precio) {
+        carrito.push({ nombre, precio });
+        actualizarCarrito();
+      }
+      function actualizarCarrito() {
+        const lista = document.getElementById("lista-carrito");
+        if (!lista) return;
+        lista.innerHTML = carrito.map(p => `<li class='border-b py-1'>${p.nombre} - $${p.precio}</li>`).join("");
+      }
       document.addEventListener("DOMContentLoaded", () => {
         const catalogo = document.getElementById("catalogo-grid");
         for(let i=2; i<=20; i++) {
+          const nombre = `Producto ${i}`;
+          const precio = 20000 + i * 500;
           const div = document.createElement('div');
           div.className = "bg-white p-4 rounded shadow";
           div.innerHTML = `
-            <img src="https://via.placeholder.com/300x300?text=Producto+${i}" alt="Producto ${i}" class="w-full mb-2">
-            <h3 class="font-bold">Producto ${i}</h3>
-            <p>$${20000 + i * 500}</p>
-            <a href="https://wa.link/ru46tm" target="_blank" class="mt-2 inline-block bg-red-700 text-white px-4 py-1 rounded">Pedir</a>
+            <img src="https://via.placeholder.com/300x300?text=Producto+${i}" alt="${nombre}" class="w-full mb-2">
+            <h3 class="font-bold">${nombre}</h3>
+            <p>$${precio}</p>
+            <button onclick="agregarAlCarrito('${nombre}', ${precio})" class="bg-blue-700 text-white px-4 py-1 rounded mt-2">Agregar al carrito</button>
           `;
           catalogo.appendChild(div);
         }
       });
     </script>
+  </section>
+
+  <!-- Sección Carrito -->
+  <section id="carrito" class="p-6 bg-gray-200">
+    <h2 class="text-2xl font-bold text-center mb-4">Tu Carrito</h2>
+    <ul id="lista-carrito" class="max-w-xl mx-auto bg-white p-4 rounded shadow"></ul>
+  </section>
+
+  <!-- Sección Mis Compras -->
+  <section id="compras" class="p-6 bg-white">
+    <h2 class="text-2xl font-bold text-center mb-4">Compras Realizadas</h2>
+    <p class="text-center">Esta sección estará disponible próximamente con seguimiento de pedidos.</p>
   </section>
 
   <!-- Personaliza tu prenda -->
