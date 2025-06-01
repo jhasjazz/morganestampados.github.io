@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrito - Morgan Estampados</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900 p-6">
+  <h1 class="text-3xl font-bold text-center mb-6">Tu Carrito</h1>
+  <ul id="lista-carrito" class="max-w-xl mx-auto bg-white p-4 rounded shadow space-y-2"></ul>
+  <script>
+    const lista = document.getElementById("lista-carrito");
+    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    lista.innerHTML = carrito.map(p => `<li class='border-b py-1'>${p.nombre} - $${p.precio}</li>`).join("");
+  </script>
+</body>
+</html>
