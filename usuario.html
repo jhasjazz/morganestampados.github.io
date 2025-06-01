@@ -1,71 +1,132 @@
-<section class="max-w-4xl mx-auto mt-12 bg-white border-4 border-red-600 rounded-2xl shadow-2xl p-10">
-  <h2 class="text-4xl font-extrabold text-center text-red-700 mb-6">👤 Datos del Usuario</h2>
-  <p class="text-gray-700 text-lg text-center mb-8 leading-relaxed">
-    Completa o actualiza tu información personal para que el proceso de compra y envío sea más rápido y seguro. Puedes añadir varias direcciones y marcar una como predeterminada.
-  </p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datos del Usuario - Morgan Estampados</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body class="bg-cover bg-no-repeat bg-center text-gray-900" style="background-image: url('fondopagina2.png');">
 
-  <form id="form-usuario" class="space-y-6">
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <label for="nombre" class="block text-red-700 font-bold mb-2">🪪 Nombre completo</label>
-        <input type="text" id="nombre" required placeholder="Ej: Juan Pérez"
-          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
-      </div>
-      <div>
-        <label for="cedula" class="block text-red-700 font-bold mb-2">🆔 Número de cédula</label>
-        <input type="text" id="cedula" required placeholder="Ej: 1234567890"
-          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
-      </div>
-    </div>
+  <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Morgan Estampados</h1>
+  </header>
 
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <label for="celular" class="block text-red-700 font-bold mb-2">📱 Número de celular</label>
-        <input type="tel" id="celular" required placeholder="Ej: +57 3001234567"
-          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
-      </div>
-      <div>
-        <label for="pais" class="block text-red-700 font-bold mb-2">🌎 País</label>
-        <input type="text" id="pais" required placeholder="Ej: Colombia"
-          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
-      </div>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <label for="departamento" class="block text-red-700 font-bold mb-2">🏙️ Departamento</label>
-        <input type="text" id="departamento" required placeholder="Ej: Antioquia"
-          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
-      </div>
-      <div>
-        <label for="direccion" class="block text-red-700 font-bold mb-2">🏠 Dirección completa</label>
-        <input type="text" id="direccion" required placeholder="Ej: Cra 45 #12-34, Apto 501"
-          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
-      </div>
-    </div>
-
-    <div class="flex items-center gap-3 mt-4">
-      <input type="checkbox" id="predeterminada" class="h-5 w-5 text-red-700 border-gray-300 rounded" />
-      <label for="predeterminada" class="text-red-700 font-medium">Usar esta como dirección predeterminada</label>
-    </div>
-
-    <div class="flex justify-center mt-8 gap-4">
-      <button type="submit"
-        class="bg-red-700 hover:bg-red-800 text-white px-8 py-3 rounded-full font-bold text-lg shadow-md transition-transform transform hover:scale-105">
-        💾 Guardar dirección
+  <section class="bg-white p-6 rounded shadow max-w-3xl mx-auto mt-10">
+    <h2 class="text-3xl font-bold text-center text-red-700 mb-4">Información del Usuario</h2>
+    <form id="form-usuario" class="space-y-4">
+      <input type="text" id="nombre" required class="w-full border rounded px-3 py-2" placeholder="Nombre completo">
+      <input type="text" id="cedula" required class="w-full border rounded px-3 py-2" placeholder="Número de cédula">
+      <input type="text" id="celular" required class="w-full border rounded px-3 py-2" placeholder="Celular">
+      <input type="text" id="pais" required class="w-full border rounded px-3 py-2" placeholder="País">
+      <input type="text" id="departamento" required class="w-full border rounded px-3 py-2" placeholder="Departamento">
+      <input type="text" id="direccion" required class="w-full border rounded px-3 py-2" placeholder="Dirección completa">
+      <input type="text" id="indicaciones" class="w-full border rounded px-3 py-2" placeholder="Indicaciones (ej: apartamento 301, portería, etc)">
+      <button type="submit" class="bg-red-700 text-white px-4 py-2 rounded w-full font-bold hover:scale-110 transition-transform">
+        Guardar dirección
       </button>
-      <button type="button" onclick="limpiarFormulario()"
-        class="bg-gray-200 hover:bg-gray-300 text-red-700 px-8 py-3 rounded-full font-bold text-lg shadow-md transition-transform transform hover:scale-105">
-        ➕ Añadir nueva dirección
-      </button>
-    </div>
-  </form>
+    </form>
 
-  <div id="lista-direcciones" class="mt-10 space-y-4">
-    <!-- Aquí se mostrarán las direcciones guardadas -->
-  </div>
+    <p id="estado-usuario" class="text-center mt-4 text-green-700 font-semibold hidden">¡Datos guardados correctamente!</p>
 
-  <p id="estado-usuario" class="text-center mt-6 text-green-700 font-semibold hidden animate-pulse">
-    ¡Datos guardados exitosamente!
-  </p>
-</section>
+    <div id="lista-direcciones" class="mt-6 space-y-4"></div>
+  </section>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCwRVaG0-WUaV2SchY00LlpX_VzGCvj8o",
+      authDomain: "morganestampadoslogin.firebaseapp.com",
+      projectId: "morganestampadoslogin",
+      storageBucket: "morganestampadoslogin.firebasestorage.app",
+      messagingSenderId: "807816306056",
+      appId: "1:807816306056:web:ac494752760b365e15ae3d",
+      measurementId: "G-WFSFQLM81S"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const form = document.getElementById("form-usuario");
+    const estado = document.getElementById("estado-usuario");
+    const lista = document.getElementById("lista-direcciones");
+    let usuarioEmail = null;
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        usuarioEmail = user.email;
+        cargarDirecciones();
+      } else {
+        alert("Por favor inicia sesión para acceder a esta página.");
+        window.location.href = "index.html";
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById("nombre").value;
+      const cedula = document.getElementById("cedula").value;
+      const celular = document.getElementById("celular").value;
+      const pais = document.getElementById("pais").value;
+      const departamento = document.getElementById("departamento").value;
+      const direccion = document.getElementById("direccion").value;
+      const indicaciones = document.getElementById("indicaciones").value;
+
+      const snapshot = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").get();
+      if (snapshot.size >= 3) {
+        alert("Solo puedes tener hasta 3 direcciones guardadas.");
+        return;
+      }
+
+      await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").add({
+        nombre, cedula, celular, pais, departamento, direccion, indicaciones, predeterminada: false
+      });
+      estado.classList.remove("hidden");
+      form.reset();
+      cargarDirecciones();
+    });
+
+    async function cargarDirecciones() {
+      lista.innerHTML = "";
+      const snapshot = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").get();
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement("div");
+        div.className = "border p-4 rounded bg-gray-100 flex justify-between items-center";
+        div.innerHTML = `
+          <div>
+            <p><strong>${data.nombre}</strong> - ${data.direccion}</p>
+            <p>${data.pais}, ${data.departamento} - 📞 ${data.celular}</p>
+            <p class="text-sm text-gray-600">📝 ${data.indicaciones || 'Sin indicaciones adicionales'}</p>
+          </div>
+          <div>
+            <label class="flex items-center gap-2">
+              <input type="radio" name="predeterminada" ${data.predeterminada ? 'checked' : ''} onclick="marcarPredeterminada('${doc.id}')">
+              <span class="text-sm">Predeterminada</span>
+            </label>
+          </div>`;
+        lista.appendChild(div);
+      });
+    }
+
+    window.marcarPredeterminada = async (id) => {
+      const snapshot = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").get();
+      const batch = db.batch();
+      snapshot.forEach(doc => {
+        const ref = doc.ref;
+        batch.update(ref, { predeterminada: doc.id === id });
+      });
+      await batch.commit();
+      cargarDirecciones();
+
+      // Para sincronizar con carrito.html
+      const direccionDoc = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").doc(id).get();
+      const direccionPred = direccionDoc.data();
+      localStorage.setItem("direccionPredeterminada", JSON.stringify(direccionPred));
+    }
+  </script>
+
+</body>
+</html>
