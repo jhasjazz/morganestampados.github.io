@@ -137,6 +137,7 @@
     const loginBtn = document.getElementById("loginBtn");
     loginBtn.addEventListener("click", () => {
       window.location.href = "https://jhasjazz.github.io/morganestampados.github.io/login.html";
+
     });
   </script>
 </body>
