@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Morgan Estampados</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <style>
     .parpadea {
       animation: blink 1s infinite;
@@ -20,12 +22,12 @@
   <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
     <h1 class="text-2xl font-bold">Morgan Estampados</h1>
     <nav class="space-x-4 flex items-center">
-      <a href="personaliza.html" class="hover:underline">Personaliza</a>
-      <a href="contacto.html" class="hover:underline">Contacto</a>
-      <a href="pagos.html" class="hover:underline">Pagos</a>
-      <a href="compras.html" class="hover:underline">Mis Compras</a>
-      <a href="reels.html" class="hover:underline">Reels</a>
+      <a href="#catalogo" class="hover:underline">Inicio</a>
+      <a href="#personaliza" class="hover:underline">Personaliza</a>
+      <a href="#contacto" class="hover:underline">Contacto</a>
+      <a href="#pagos" class="hover:underline">Pagos</a>
       <a href="carro.html" class="hover:underline">Carrito</a>
+      <a href="#compras" class="hover:underline">Mis Compras</a>
       <button id="loginBtn" class="bg-white text-red-700 px-2 py-1 rounded">Login Google</button>
       <div id="userCircle" class="hidden w-8 h-8 rounded-full bg-white text-red-700 font-bold flex items-center justify-center"></div>
     </nav>
@@ -39,12 +41,100 @@
   <!-- Catálogo de productos -->
   <section id="catalogo" class="p-6">
     <h2 class="text-3xl font-semibold text-center mb-6">Catálogo de Productos</h2>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="catalogo-grid">
-      <!-- Los productos se agregarán por JS -->
-    </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="catalogo-grid"></div>
+  </section>
 
-    <script>
-      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  <!-- Resto del contenido igual -->
+  <section id="compras" class="p-6 bg-white">
+    <h2 class="text-2xl font-bold text-center mb-4">Compras Realizadas</h2>
+    <p class="text-center">Esta sección estará disponible próximamente con seguimiento de pedidos.</p>
+  </section>
+
+  <section id="personaliza" class="p-6 bg-white">
+    <h2 class="text-2xl font-bold text-center mb-4">Personaliza tu prenda</h2>
+    <form class="max-w-xl mx-auto space-y-4">
+      <input type="text" placeholder="Nombre completo" class="w-full border p-2 rounded">
+      <input type="email" placeholder="Correo electrónico" class="w-full border p-2 rounded">
+      <input type="file" class="w-full border p-2 rounded">
+      <select class="w-full border p-2 rounded">
+        <option>Camiseta</option>
+        <option>Gorra</option>
+        <option>Tote Bag</option>
+      </select>
+      <textarea placeholder="Detalles del diseño" class="w-full border p-2 rounded"></textarea>
+      <a href="https://wa.link/ru46tm" target="_blank" class="block bg-red-700 text-white px-4 py-2 text-center rounded">Enviar por WhatsApp</a>
+    </form>
+  </section>
+
+  <section id="contacto" class="p-6">
+    <h2 class="text-2xl font-bold text-center mb-4">Contacto</h2>
+    <form class="max-w-xl mx-auto space-y-4">
+      <input type="text" placeholder="Nombre" class="w-full border p-2 rounded">
+      <input type="email" placeholder="Correo" class="w-full border p-2 rounded">
+      <textarea placeholder="Mensaje" class="w-full border p-2 rounded"></textarea>
+      <button class="bg-red-700 text-white px-4 py-2 rounded">Enviar</button>
+    </form>
+  </section>
+
+  <section id="pagos" class="p-6 bg-white">
+    <h2 class="text-2xl font-bold text-center mb-4">Pagos en Línea</h2>
+    <p class="text-center mb-2">Realiza tu pago a través de nuestros métodos autorizados.</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="#" class="bg-green-600 text-white px-4 py-2 rounded">Nequi</a>
+      <a href="#" class="bg-yellow-500 text-white px-4 py-2 rounded">Bancolombia</a>
+      <a href="#" class="bg-blue-700 text-white px-4 py-2 rounded">Daviplata</a>
+    </div>
+  </section>
+
+  <!-- WhatsApp flotante -->
+  <a href="https://wa.link/ru46tm" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg parpadea text-xl font-bold">
+    📩 Escríbenos por WhatsApp
+  </a>
+
+  <!-- Scripts -->
+  <script>
+    // Firebase Config (REEMPLAZA ESTOS DATOS)
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_AUTH_DOMAIN",
+      projectId: "TU_PROJECT_ID",
+      storageBucket: "TU_STORAGE_BUCKET",
+      messagingSenderId: "TU_MESSAGING_SENDER_ID",
+      appId: "TU_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const loginBtn = document.getElementById("loginBtn");
+    const userCircle = document.getElementById("userCircle");
+
+    loginBtn.addEventListener("click", () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then(result => {
+          const correo = result.user.email;
+          localStorage.setItem("usuarioLogueado", correo);
+          loginBtn.classList.add("hidden");
+          userCircle.textContent = correo.charAt(0).toUpperCase();
+          userCircle.classList.remove("hidden");
+        })
+        .catch(error => {
+          alert("Error al iniciar sesión.");
+          console.error(error);
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const correo = localStorage.getItem("usuarioLogueado");
+      if (correo) {
+        loginBtn.classList.add("hidden");
+        userCircle.textContent = correo.charAt(0).toUpperCase();
+        userCircle.classList.remove("hidden");
+      }
+
+      // Generar catálogo
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const catalogo = document.getElementById("catalogo-grid");
 
       function guardarCarrito() {
         localStorage.setItem('carrito', JSON.stringify(carrito));
@@ -77,58 +167,29 @@
         guardarCarrito();
       }
 
-      document.addEventListener("DOMContentLoaded", () => {
-        const catalogo = document.getElementById("catalogo-grid");
-        for (let i = 1; i <= 20; i++) {
-          const nombre = i === 1 ? "Camiseta Pirata" : `Producto ${i}`;
-          const precio = i === 1 ? 35000 : 20000 + i * 500;
-          const cantidadActual = obtenerCantidad(nombre);
-          const div = document.createElement('div');
-          div.className = "bg-white p-4 rounded shadow flex flex-col items-center";
-          div.innerHTML = `
-            <img src="p${i}.jpeg" alt="${nombre}" class="w-full mb-2">
-            <h3 class="font-bold text-center">${nombre}</h3>
-            <p>$${precio}</p>
-            <div class="flex flex-col mt-2 w-full items-center">
-              <a href="p${i}.html" class="bg-purple-500 text-white px-4 py-2 rounded text-center mb-2 w-full">Ver detalles</a>
-              <div class="flex items-center gap-2 w-full">
-                <button onclick="agregarAlCarrito('${nombre}', ${precio}, ${i})" class="bg-pink-500 text-white px-4 py-2 rounded w-2/3 text-sm">
-                  Añadir al carro ❤️
-                </button>
-                <input type="number" min="1" value="${cantidadActual}" id="contador-${i}" class="w-16 border rounded px-2 py-1 text-center" onchange="actualizarCantidadDesdeInput('${nombre}', this.value, ${i})">
-              </div>
+      for (let i = 1; i <= 20; i++) {
+        const nombre = i === 1 ? "Camiseta Pirata" : `Producto ${i}`;
+        const precio = i === 1 ? 35000 : 20000 + i * 500;
+        const cantidadActual = obtenerCantidad(nombre);
+        const div = document.createElement('div');
+        div.className = "bg-white p-4 rounded shadow flex flex-col items-center";
+        div.innerHTML = `
+          <img src="p${i}.jpeg" alt="${nombre}" class="w-full mb-2">
+          <h3 class="font-bold text-center">${nombre}</h3>
+          <p>$${precio}</p>
+          <div class="flex flex-col mt-2 w-full items-center">
+            <a href="p${i}.html" class="bg-purple-500 text-white px-4 py-2 rounded text-center mb-2 w-full">Ver detalles</a>
+            <div class="flex items-center gap-2 w-full">
+              <button onclick="agregarAlCarrito('${nombre}', ${precio}, ${i})" class="bg-pink-500 text-white px-4 py-2 rounded w-2/3 text-sm">
+                Añadir al carro ❤️
+              </button>
+              <input type="number" min="1" value="${cantidadActual}" id="contador-${i}" class="w-16 border rounded px-2 py-1 text-center" onchange="actualizarCantidadDesdeInput('${nombre}', this.value, ${i})">
             </div>
-          `;
-          catalogo.appendChild(div);
-        }
-
-        // Mostrar usuario logueado si ya existe
-        const correo = localStorage.getItem("usuarioLogueado");
-        if (correo) {
-          document.getElementById("loginBtn").classList.add("hidden");
-          const userCircle = document.getElementById("userCircle");
-          userCircle.textContent = correo.charAt(0).toUpperCase();
-          userCircle.classList.remove("hidden");
-        }
-      });
-
-      // Simulación de login
-      const loginBtn = document.getElementById("loginBtn");
-      if (loginBtn) {
-        loginBtn.addEventListener("click", () => {
-          const correo = prompt("Ingresa tu correo de Google:");
-          if (correo) {
-            localStorage.setItem("usuarioLogueado", correo);
-            location.reload();
-          }
-        });
+          </div>
+        `;
+        catalogo.appendChild(div);
       }
-    </script>
-  </section>
-
-  <!-- Botón flotante de WhatsApp parpadeante -->
-  <a href="https://wa.link/ru46tm" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg parpadea text-xl font-bold">
-    📩 Escríbenos por WhatsApp
-  </a>
+    });
+  </script>
 </body>
 </html>
