@@ -23,7 +23,7 @@
     }
   </style>
 </head>
-<body class="text-gray-900 relative min-h-screen bg-cover bg-no-repeat bg-center" style="background-image: url('fondopagina1.png');">
+<body class="text-gray-900 relative min-h-screen bg-cover bg-no-repeat bg-center" style="background-image: url('fondopagina2.png');">
 
   <!-- Header -->
   <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
