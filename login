@@ -1,1 +1,51 @@
-log
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login con Google - Morgan Estampados</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+  <div class="bg-white p-8 rounded shadow-lg text-center">
+    <h1 class="text-2xl font-bold mb-4">Bienvenido a Morgan Estampados</h1>
+    <p class="mb-6">Inicia sesión con tu cuenta de Google para continuar</p>
+    <button id="loginGoogle" class="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700">
+      Iniciar sesión con Google
+    </button>
+  </div>
+
+  <script>
+    // Configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCwRVaG0-WUaV2SchY00LlpX_VzGCvj8o",
+      authDomain: "morganestampadoslogin.firebaseapp.com",
+      projectId: "morganestampadoslogin",
+      storageBucket: "morganestampadoslogin.appspot.com",
+      messagingSenderId: "807816306056",
+      appId: "1:807816306056:web:ac494752760b365e15ae3d",
+      measurementId: "G-WFSFQLM81S"
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Función de login con Google
+    document.getElementById("loginGoogle").addEventListener("click", () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+          // Usuario autenticado
+          window.location.href = "https://morganestampados.github.io"; // Redirección a página principal
+        })
+        .catch((error) => {
+          console.error("Error al iniciar sesión:", error);
+          alert("No se pudo iniciar sesión. Intenta nuevamente.");
+        });
+    });
+  </script>
+</body>
+</html>
+
