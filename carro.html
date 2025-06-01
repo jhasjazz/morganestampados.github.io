@@ -24,16 +24,16 @@
     <aside class="w-[30%] bg-white p-4 rounded shadow max-w-md self-start">
       <h3 class="text-xl font-semibold mb-4">Continuar Compra</h3>
       <button id="btn-pagar" onclick="window.location.href='pagos.html'" class="bg-green-600 text-white px-4 py-2 rounded w-full">Pagar $0</button>
+      
       <!-- Dirección predeterminada -->
-        <div id="direccion-entrega" class="mt-6 p-4 bg-white rounded shadow hidden">
-        <h3 class="font-bold text-lg mb-2 text-red-700">Dirección de entrega:</h3>
-        <p id="direccion-info" class="text-gray-800"></p>
-        </div>
-
+      <div id="direccion-entrega" class="mt-4 p-4 bg-white rounded shadow text-sm text-gray-800 hidden">
+        <p class="font-semibold">📦 Tu pedido será llevado a esta dirección:</p>
+        <p id="direccion-info" class="mt-1 italic text-gray-700"></p>
+        <a href="usuario.html" class="inline-block mt-2 text-red-700 font-bold underline hover:text-red-900">Cambiar dirección</a>
+      </div>
     </aside>
   </main>
 
-  
   <!-- Modal de confirmación -->
   <div id="modal-confirmacion" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white p-6 rounded shadow-lg text-center">
@@ -128,35 +128,32 @@
       indexAEliminar = null;
     });
 
-    document.addEventListener('DOMContentLoaded', renderizarCarrito);
+    function mostrarDireccionEntrega() {
+      const direccion = JSON.parse(localStorage.getItem("direccionPredeterminada"));
+      const contenedor = document.getElementById("direccion-entrega");
+      const texto = document.getElementById("direccion-info");
+
+      if (direccion) {
+        texto.innerHTML = `
+          <strong>${direccion.nombre}</strong><br>
+          ${direccion.direccion} - ${direccion.indicaciones || 'Sin indicaciones'}<br>
+          ${direccion.pais}, ${direccion.departamento}<br>
+          📞 ${direccion.celular}
+        `;
+        contenedor.classList.remove("hidden");
+      } else {
+        contenedor.classList.add("hidden");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderizarCarrito();
+      mostrarDireccionEntrega();
+    });
+
+    window.addEventListener("direccionActualizada", () => {
+      mostrarDireccionEntrega();
+    });
   </script>
-  function mostrarDireccionEntrega() {
-  const direccion = JSON.parse(localStorage.getItem("direccionPredeterminada"));
-  const contenedor = document.getElementById("direccion-entrega");
-  const texto = document.getElementById("direccion-info");
-
-  if (direccion) {
-    texto.innerHTML = `
-      <strong>${direccion.nombre}</strong><br>
-      ${direccion.direccion} - ${direccion.indicaciones || 'Sin indicaciones'}<br>
-      ${direccion.pais}, ${direccion.departamento}<br>
-      📞 ${direccion.celular}
-    `;
-    contenedor.classList.remove("hidden");
-  } else {
-    contenedor.classList.add("hidden");
-  }
-}
-
-// Ejecutar al cargar carrito
-document.addEventListener("DOMContentLoaded", () => {
-  mostrarDireccionEntrega();
-});
-
-// Escuchar cambios desde usuario.html
-window.addEventListener("direccionActualizada", () => {
-  mostrarDireccionEntrega();
-});
-
 </body>
 </html>
