@@ -55,6 +55,7 @@
         const li = document.createElement('li');
         li.className = "flex items-center gap-4 p-2 border rounded";
         li.innerHTML = `
+          <img src="p${index + 1}.jpeg" alt="${item.nombre}" class="w-12 h-12 object-cover rounded">
           <input type="checkbox" class="seleccionar" data-index="${index}" checked>
           <span class="flex-1">${item.nombre}</span>
           <input type="number" min="1" value="${item.cantidad || 1}" class="cantidad w-16 border rounded p-1" data-index="${index}">
