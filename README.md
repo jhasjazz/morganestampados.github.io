@@ -39,13 +39,13 @@
   <section id="catalogo" class="p-6">
     <h2 class="text-3xl font-semibold text-center mb-6">Catálogo de Productos</h2>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="catalogo-grid">
-      <div class="bg-white p-4 rounded shadow">
-        <img src="https://via.placeholder.com/300x300?text=Camiseta" alt="Camiseta" class="w-full mb-2">
+      <div class="bg-white p-4 rounded shadow flex flex-col items-center">
+        <img src="p1.jpeg" alt="Camiseta Pirata" class="w-full mb-2">
         <h3 class="font-bold">Camiseta Pirata</h3>
         <p>$35.000</p>
-        <div class="flex space-x-2 mt-2">
-          <button onclick="agregarAlCarrito('Camiseta Pirata', 35000)" class="bg-blue-700 text-white px-4 py-1 rounded">Agregar al carrito</button>
-          <a href="p1.html" class="bg-gray-700 text-white px-4 py-1 rounded">Detalles</a>
+        <div class="flex flex-col md:flex-row md:space-x-2 mt-2 w-full justify-center">
+          <button onclick="agregarAlCarrito('Camiseta Pirata', 35000)" class="bg-pink-500 text-white px-4 py-1 rounded mb-2 md:mb-0 flex items-center justify-center gap-2">Añadir al carro <span>❤️</span></button>
+          <a href="p1.html" class="bg-purple-500 text-white px-4 py-1 rounded text-center">Ver detalles</a>
         </div>
       </div>
     </div>
@@ -62,18 +62,18 @@
       }
       document.addEventListener("DOMContentLoaded", () => {
         const catalogo = document.getElementById("catalogo-grid");
-        for(let i=2; i<=20; i++) {
+        for(let i = 2; i <= 20; i++) {
           const nombre = `Producto ${i}`;
           const precio = 20000 + i * 500;
           const div = document.createElement('div');
-          div.className = "bg-white p-4 rounded shadow";
+          div.className = "bg-white p-4 rounded shadow flex flex-col items-center";
           div.innerHTML = `
-            <img src="https://via.placeholder.com/300x300?text=Producto+${i}" alt="${nombre}" class="w-full mb-2">
+            <img src="p${i}.jpeg" alt="${nombre}" class="w-full mb-2">
             <h3 class="font-bold">${nombre}</h3>
             <p>$${precio}</p>
-            <div class="flex space-x-2 mt-2">
-              <button onclick="agregarAlCarrito('${nombre}', ${precio})" class="bg-blue-700 text-white px-4 py-1 rounded">Agregar al carrito</button>
-              <a href="p${i}.html" class="bg-gray-700 text-white px-4 py-1 rounded">Detalles</a>
+            <div class="flex flex-col md:flex-row md:space-x-2 mt-2 w-full justify-center">
+              <button onclick="agregarAlCarrito('${nombre}', ${precio})" class="bg-pink-500 text-white px-4 py-1 rounded mb-2 md:mb-0 flex items-center justify-center gap-2">Añadir al carro <span>❤️</span></button>
+              <a href="p${i}.html" class="bg-purple-500 text-white px-4 py-1 rounded text-center">Ver detalles</a>
             </div>
           `;
           catalogo.appendChild(div);
