@@ -28,6 +28,28 @@
     </aside>
   </main>
 
+<div id="direccion-pago" class="mt-4 bg-white p-4 rounded shadow text-sm">
+  <h3 class="text-red-700 font-bold mb-2">Dirección de envío:</h3>
+  <p id="info-direccion"></p>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const direccion = JSON.parse(localStorage.getItem("direccionPredeterminada"));
+    const info = document.getElementById("info-direccion");
+    if (direccion && info) {
+      info.innerHTML = `
+        <strong>${direccion.nombre}</strong><br>
+        ${direccion.direccion}<br>
+        ${direccion.pais}, ${direccion.departamento}<br>
+        📞 ${direccion.celular}<br>
+        📝 ${direccion.indicaciones || 'Sin indicaciones'}`;
+    }
+  });
+</script>
+
+
+  
   <!-- Modal de confirmación -->
   <div id="modal-confirmacion" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white p-6 rounded shadow-lg text-center">
