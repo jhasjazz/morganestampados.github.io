@@ -30,9 +30,10 @@
       </button>
     </form>
 
-    <p id="estado-usuario" class="text-center mt-4 text-green-700 font-semibold hidden">¡Datos guardados correctamente!</p>
+    <p class="text-sm text-gray-600 mt-4 text-center">Puedes agregar máximo 4 direcciones. Selecciona una como predeterminada.</p>
+    <p id="estado-usuario" class="text-center mt-2 text-green-700 font-semibold hidden">¡Datos guardados correctamente!</p>
 
-    <div id="lista-direcciones" class="mt-6 space-y-4"></div>
+    <div id="lista-direcciones" class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
   </section>
 
   <script>
@@ -75,8 +76,8 @@
       const indicaciones = document.getElementById("indicaciones").value;
 
       const snapshot = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").get();
-      if (snapshot.size >= 3) {
-        alert("Solo puedes tener hasta 3 direcciones guardadas.");
+      if (snapshot.size >= 4) {
+        alert("Solo puedes tener hasta 4 direcciones guardadas.");
         return;
       }
 
@@ -94,19 +95,17 @@
       snapshot.forEach(doc => {
         const data = doc.data();
         const div = document.createElement("div");
-        div.className = "border p-4 rounded bg-gray-100 flex justify-between items-center";
+        div.className = "border p-4 rounded bg-gray-100 shadow-md flex flex-col justify-between";
         div.innerHTML = `
-          <div>
-            <p><strong>${data.nombre}</strong> - ${data.direccion}</p>
-            <p>${data.pais}, ${data.departamento} - 📞 ${data.celular}</p>
-            <p class="text-sm text-gray-600">📝 ${data.indicaciones || 'Sin indicaciones adicionales'}</p>
+          <div class="mb-2">
+            <p class="font-bold text-lg text-red-700">${data.nombre}</p>
+            <p>${data.direccion} - ${data.indicaciones || 'Sin indicaciones'}</p>
+            <p>${data.pais}, ${data.departamento}</p>
+            <p class="text-sm text-gray-600">📞 ${data.celular}</p>
           </div>
-          <div>
-            <label class="flex items-center gap-2">
-              <input type="radio" name="predeterminada" ${data.predeterminada ? 'checked' : ''} onclick="marcarPredeterminada('${doc.id}')">
-              <span class="text-sm">Predeterminada</span>
-            </label>
-          </div>`;
+          <button onclick="marcarPredeterminada('${doc.id}')" class="text-sm px-3 py-1 rounded font-semibold ${data.predeterminada ? 'bg-green-500 text-white' : 'bg-gray-300 text-black'}">
+            ${data.predeterminada ? 'Predeterminada ✓' : 'Seleccionar como predeterminada'}
+          </button>`;
         lista.appendChild(div);
       });
     }
@@ -121,10 +120,12 @@
       await batch.commit();
       cargarDirecciones();
 
-      // Para sincronizar con carrito.html
       const direccionDoc = await db.collection("usuarios").doc(usuarioEmail).collection("direcciones").doc(id).get();
       const direccionPred = direccionDoc.data();
       localStorage.setItem("direccionPredeterminada", JSON.stringify(direccionPred));
+
+      const event = new Event("direccionActualizada");
+      window.dispatchEvent(event);
     }
   </script>
 
