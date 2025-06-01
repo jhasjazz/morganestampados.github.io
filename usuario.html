@@ -1,0 +1,71 @@
+<section class="max-w-4xl mx-auto mt-12 bg-white border-4 border-red-600 rounded-2xl shadow-2xl p-10">
+  <h2 class="text-4xl font-extrabold text-center text-red-700 mb-6">👤 Datos del Usuario</h2>
+  <p class="text-gray-700 text-lg text-center mb-8 leading-relaxed">
+    Completa o actualiza tu información personal para que el proceso de compra y envío sea más rápido y seguro. Puedes añadir varias direcciones y marcar una como predeterminada.
+  </p>
+
+  <form id="form-usuario" class="space-y-6">
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <label for="nombre" class="block text-red-700 font-bold mb-2">🪪 Nombre completo</label>
+        <input type="text" id="nombre" required placeholder="Ej: Juan Pérez"
+          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
+      </div>
+      <div>
+        <label for="cedula" class="block text-red-700 font-bold mb-2">🆔 Número de cédula</label>
+        <input type="text" id="cedula" required placeholder="Ej: 1234567890"
+          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <label for="celular" class="block text-red-700 font-bold mb-2">📱 Número de celular</label>
+        <input type="tel" id="celular" required placeholder="Ej: +57 3001234567"
+          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
+      </div>
+      <div>
+        <label for="pais" class="block text-red-700 font-bold mb-2">🌎 País</label>
+        <input type="text" id="pais" required placeholder="Ej: Colombia"
+          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <label for="departamento" class="block text-red-700 font-bold mb-2">🏙️ Departamento</label>
+        <input type="text" id="departamento" required placeholder="Ej: Antioquia"
+          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
+      </div>
+      <div>
+        <label for="direccion" class="block text-red-700 font-bold mb-2">🏠 Dirección completa</label>
+        <input type="text" id="direccion" required placeholder="Ej: Cra 45 #12-34, Apto 501"
+          class="w-full border-2 border-red-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500" />
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 mt-4">
+      <input type="checkbox" id="predeterminada" class="h-5 w-5 text-red-700 border-gray-300 rounded" />
+      <label for="predeterminada" class="text-red-700 font-medium">Usar esta como dirección predeterminada</label>
+    </div>
+
+    <div class="flex justify-center mt-8 gap-4">
+      <button type="submit"
+        class="bg-red-700 hover:bg-red-800 text-white px-8 py-3 rounded-full font-bold text-lg shadow-md transition-transform transform hover:scale-105">
+        💾 Guardar dirección
+      </button>
+      <button type="button" onclick="limpiarFormulario()"
+        class="bg-gray-200 hover:bg-gray-300 text-red-700 px-8 py-3 rounded-full font-bold text-lg shadow-md transition-transform transform hover:scale-105">
+        ➕ Añadir nueva dirección
+      </button>
+    </div>
+  </form>
+
+  <div id="lista-direcciones" class="mt-10 space-y-4">
+    <!-- Aquí se mostrarán las direcciones guardadas -->
+  </div>
+
+  <p id="estado-usuario" class="text-center mt-6 text-green-700 font-semibold hidden animate-pulse">
+    ¡Datos guardados exitosamente!
+  </p>
+</section>
