@@ -43,9 +43,9 @@
         <img src="p1.jpeg" alt="Camiseta Pirata" class="w-full mb-2">
         <h3 class="font-bold">Camiseta Pirata</h3>
         <p>$35.000</p>
-        <div class="flex flex-col md:flex-row md:space-x-2 mt-2 w-full justify-center">
-          <button onclick="agregarAlCarrito('Camiseta Pirata', 35000)" class="bg-pink-500 text-white px-4 py-1 rounded mb-2 md:mb-0 flex items-center justify-center gap-2">Añadir al carro <span>❤️</span></button>
-          <a href="p1.html" class="bg-purple-500 text-white px-4 py-1 rounded text-center">Ver detalles</a>
+        <div class="flex flex-col mt-2 w-full justify-center">
+          <a href="p1.html" class="bg-purple-500 text-white px-4 py-2 rounded text-center mb-2">Ver detalles</a>
+          <button onclick="agregarAlCarrito('Camiseta Pirata', 35000)" class="bg-pink-500 text-white px-4 py-2 rounded flex items-center justify-center gap-2">Añadir al carro <span>❤️</span></button>
         </div>
       </div>
     </div>
@@ -71,9 +71,9 @@
             <img src="p${i}.jpeg" alt="${nombre}" class="w-full mb-2">
             <h3 class="font-bold">${nombre}</h3>
             <p>$${precio}</p>
-            <div class="flex flex-col md:flex-row md:space-x-2 mt-2 w-full justify-center">
-              <button onclick="agregarAlCarrito('${nombre}', ${precio})" class="bg-pink-500 text-white px-4 py-1 rounded mb-2 md:mb-0 flex items-center justify-center gap-2">Añadir al carro <span>❤️</span></button>
-              <a href="p${i}.html" class="bg-purple-500 text-white px-4 py-1 rounded text-center">Ver detalles</a>
+            <div class="flex flex-col mt-2 w-full justify-center">
+              <a href="p${i}.html" class="bg-purple-500 text-white px-4 py-2 rounded text-center mb-2">Ver detalles</a>
+              <button onclick="agregarAlCarrito('${nombre}', ${precio})" class="bg-pink-500 text-white px-4 py-2 rounded flex items-center justify-center gap-2">Añadir al carro <span>❤️</span></button>
             </div>
           `;
           catalogo.appendChild(div);
