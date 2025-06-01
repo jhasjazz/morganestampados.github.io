@@ -23,7 +23,8 @@
     }
   </style>
 </head>
-<body class="text-gray-900 relative">
+<body class="text-gray-900 relative min-h-screen bg-cover bg-no-repeat bg-center" style="background-image: url('fondopagina1.png');">
+
   <!-- Header -->
   <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
     <h1 class="text-2xl font-bold">Morgan Estampados</h1>
