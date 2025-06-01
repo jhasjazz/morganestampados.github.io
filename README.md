@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Morgan Estampados</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style="background-image: url('fondopagina.png'); background-size: cover; background-repeat: no-repeat;">>
+  <style>>
     .parpadea {
       animation: blink 1s infinite;
     }
