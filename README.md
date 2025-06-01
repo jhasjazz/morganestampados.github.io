@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Morgan Estampados</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>>
+  <style>
     .parpadea {
       animation: blink 1s infinite;
     }
@@ -15,7 +15,7 @@
     }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-900 >
+<body class="text-gray-900" style="background-image: url('fondopagina.png'); background-size: cover; background-repeat: no-repeat;">
   <!-- Barra de navegación -->
   <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
     <h1 class="text-2xl font-bold">Morgan Estampados</h1>
@@ -39,27 +39,27 @@
   <section id="catalogo" class="p-6">
     <h2 class="text-3xl font-semibold text-center mb-6">Catálogo de Productos</h2>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="catalogo-grid">
-      <div class="bg-white p-4 rounded shadow flex flex-col items-center">
-        <img src="p1.jpeg" alt="Camiseta Pirata" class="w-full mb-2">
-        <h3 class="font-bold">Camiseta Pirata</h3>
-        <p>$35.000</p>
-        <div class="flex flex-col mt-2 w-full justify-center">
-          <a href="p1.html" class="bg-purple-500 text-white px-4 py-2 rounded text-center mb-2">Ver detalles</a>
-          <button onclick="agregarAlCarrito('Camiseta Pirata', 35000)" class="bg-pink-500 text-white px-4 py-2 rounded flex items-center justify-center gap-2">Añadir al carro <span>❤️</span></button>
-        </div>
-      </div>
+      <!-- Los productos se agregarán por JS -->
     </div>
     <script>
-      const carrito = [];
-      function agregarAlCarrito(nombre, precio) {
-        carrito.push({ nombre, precio });
+      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+      function agregarAlCarrito(nombre, precio, index) {
+        const itemExistente = carrito.find(item => item.nombre === nombre);
+        if (itemExistente) {
+          itemExistente.cantidad++;
+        } else {
+          carrito.push({ nombre, precio, cantidad: 1 });
+        }
         localStorage.setItem('carrito', JSON.stringify(carrito));
+        document.getElementById(`contador-${index}`).textContent = carrito.find(item => item.nombre === nombre).cantidad;
       }
+
       document.addEventListener("DOMContentLoaded", () => {
         const catalogo = document.getElementById("catalogo-grid");
-        for(let i = 2; i <= 20; i++) {
-          const nombre = `Producto ${i}`;
-          const precio = 20000 + i * 500;
+        for (let i = 1; i <= 20; i++) {
+          const nombre = i === 1 ? "Camiseta Pirata" : `Producto ${i}`;
+          const precio = i === 1 ? 35000 : 20000 + i * 500;
           const div = document.createElement('div');
           div.className = "bg-white p-4 rounded shadow flex flex-col items-center";
           div.innerHTML = `
@@ -68,7 +68,9 @@
             <p>$${precio}</p>
             <div class="flex flex-col mt-2 w-full justify-center">
               <a href="p${i}.html" class="bg-purple-500 text-white px-4 py-2 rounded text-center mb-2">Ver detalles</a>
-              <button onclick="agregarAlCarrito('${nombre}', ${precio})" class="bg-pink-500 text-white px-4 py-2 rounded flex items-center justify-center gap-2">Añadir al carro <span>❤️</span></button>
+              <button onclick="agregarAlCarrito('${nombre}', ${precio}, ${i})" class="bg-pink-500 text-white px-4 py-2 rounded flex items-center justify-center gap-2">
+                Añadir al carro <span>❤️</span> <span id="contador-${i}" class="ml-2 bg-white text-pink-600 px-2 rounded">0</span>
+              </button>
             </div>
           `;
           catalogo.appendChild(div);
