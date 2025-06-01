@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Morgan Estampados</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <style>
     .parpadea {
       animation: blink 1s infinite;
@@ -134,10 +132,12 @@
     📩 Escríbenos por WhatsApp
   </a>
 
-  <!-- Script Firebase Login Google (configuración pendiente) -->
+  <!-- Script de redirección al login -->
   <script>
     const loginBtn = document.getElementById("loginBtn");
-    loginBtn.addEventListener("click", () => alert("Login con Google próximamente disponible"));
+    loginBtn.addEventListener("click", () => {
+      window.location.href = "https://morganestampados.github.io/login.html";
+    });
   </script>
 </body>
 </html>
