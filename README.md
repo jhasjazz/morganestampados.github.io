@@ -19,12 +19,15 @@
   <!-- Barra de navegación -->
   <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
     <h1 class="text-2xl font-bold">Morgan Estampados</h1>
-    <nav class="space-x-4">
+    <nav class="space-x-4 flex items-center">
       <a href="personaliza.html" class="hover:underline">Personaliza</a>
       <a href="contacto.html" class="hover:underline">Contacto</a>
       <a href="pagos.html" class="hover:underline">Pagos</a>
       <a href="compras.html" class="hover:underline">Mis Compras</a>
       <a href="reels.html" class="hover:underline">Reels</a>
+      <a href="carro.html" class="hover:underline">Carrito</a>
+      <button id="loginBtn" class="bg-white text-red-700 px-2 py-1 rounded">Login Google</button>
+      <div id="userCircle" class="hidden w-8 h-8 rounded-full bg-white text-red-700 font-bold flex items-center justify-center"></div>
     </nav>
   </header>
 
@@ -98,7 +101,28 @@
           `;
           catalogo.appendChild(div);
         }
+
+        // Mostrar usuario logueado si ya existe
+        const correo = localStorage.getItem("usuarioLogueado");
+        if (correo) {
+          document.getElementById("loginBtn").classList.add("hidden");
+          const userCircle = document.getElementById("userCircle");
+          userCircle.textContent = correo.charAt(0).toUpperCase();
+          userCircle.classList.remove("hidden");
+        }
       });
+
+      // Simulación de login
+      const loginBtn = document.getElementById("loginBtn");
+      if (loginBtn) {
+        loginBtn.addEventListener("click", () => {
+          const correo = prompt("Ingresa tu correo de Google:");
+          if (correo) {
+            localStorage.setItem("usuarioLogueado", correo);
+            location.reload();
+          }
+        });
+      }
     </script>
   </section>
 
