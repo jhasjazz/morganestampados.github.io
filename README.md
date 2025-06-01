@@ -20,13 +20,11 @@
   <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
     <h1 class="text-2xl font-bold">Morgan Estampados</h1>
     <nav class="space-x-4">
-      <a href="#catalogo" class="hover:underline">Inicio</a>
-      <a href="#personaliza" class="hover:underline">Personaliza</a>
-      <a href="#contacto" class="hover:underline">Contacto</a>
-      <a href="#pagos" class="hover:underline">Pagos</a>
-      <a href="carro.html" class="hover:underline">Carrito</a>
-      <a href="#compras" class="hover:underline">Mis Compras</a>
-      <button id="loginBtn" class="bg-white text-red-700 px-2 py-1 rounded">Login Google</button>
+      <a href="personaliza.html" class="hover:underline">Personaliza</a>
+      <a href="contacto.html" class="hover:underline">Contacto</a>
+      <a href="pagos.html" class="hover:underline">Pagos</a>
+      <a href="compras.html" class="hover:underline">Mis Compras</a>
+      <a href="reels.html" class="hover:underline">Reels</a>
     </nav>
   </header>
 
@@ -41,8 +39,18 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="catalogo-grid">
       <!-- Los productos se agregarán por JS -->
     </div>
+
     <script>
       let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+      function guardarCarrito() {
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+      }
+
+      function obtenerCantidad(nombre) {
+        const item = carrito.find(item => item.nombre === nombre);
+        return item ? item.cantidad : 0;
+      }
 
       function agregarAlCarrito(nombre, precio, index) {
         const itemExistente = carrito.find(item => item.nombre === nombre);
@@ -51,8 +59,19 @@
         } else {
           carrito.push({ nombre, precio, cantidad: 1 });
         }
-        localStorage.setItem('carrito', JSON.stringify(carrito));
-        document.getElementById(`contador-${index}`).textContent = carrito.find(item => item.nombre === nombre).cantidad;
+        guardarCarrito();
+        document.getElementById(`contador-${index}`).value = obtenerCantidad(nombre);
+      }
+
+      function actualizarCantidadDesdeInput(nombre, valor, index) {
+        const cantidad = parseInt(valor);
+        const item = carrito.find(item => item.nombre === nombre);
+        if (item) {
+          item.cantidad = cantidad > 0 ? cantidad : 1;
+        } else {
+          carrito.push({ nombre, precio: 0, cantidad: cantidad });
+        }
+        guardarCarrito();
       }
 
       document.addEventListener("DOMContentLoaded", () => {
@@ -60,17 +79,21 @@
         for (let i = 1; i <= 20; i++) {
           const nombre = i === 1 ? "Camiseta Pirata" : `Producto ${i}`;
           const precio = i === 1 ? 35000 : 20000 + i * 500;
+          const cantidadActual = obtenerCantidad(nombre);
           const div = document.createElement('div');
           div.className = "bg-white p-4 rounded shadow flex flex-col items-center";
           div.innerHTML = `
             <img src="p${i}.jpeg" alt="${nombre}" class="w-full mb-2">
-            <h3 class="font-bold">${nombre}</h3>
+            <h3 class="font-bold text-center">${nombre}</h3>
             <p>$${precio}</p>
-            <div class="flex flex-col mt-2 w-full justify-center">
-              <a href="p${i}.html" class="bg-purple-500 text-white px-4 py-2 rounded text-center mb-2">Ver detalles</a>
-              <button onclick="agregarAlCarrito('${nombre}', ${precio}, ${i})" class="bg-pink-500 text-white px-4 py-2 rounded flex items-center justify-center gap-2">
-                Añadir al carro <span>❤️</span> <span id="contador-${i}" class="ml-2 bg-white text-pink-600 px-2 rounded">0</span>
-              </button>
+            <div class="flex flex-col mt-2 w-full items-center">
+              <a href="p${i}.html" class="bg-purple-500 text-white px-4 py-2 rounded text-center mb-2 w-full">Ver detalles</a>
+              <div class="flex items-center gap-2 w-full">
+                <button onclick="agregarAlCarrito('${nombre}', ${precio}, ${i})" class="bg-pink-500 text-white px-4 py-2 rounded w-2/3 text-sm">
+                  Añadir al carro ❤️
+                </button>
+                <input type="number" min="1" value="${cantidadActual}" id="contador-${i}" class="w-16 border rounded px-2 py-1 text-center" onchange="actualizarCantidadDesdeInput('${nombre}', this.value, ${i})">
+              </div>
             </div>
           `;
           catalogo.appendChild(div);
@@ -79,62 +102,9 @@
     </script>
   </section>
 
-  <!-- Sección Mis Compras -->
-  <section id="compras" class="p-6 bg-white">
-    <h2 class="text-2xl font-bold text-center mb-4">Compras Realizadas</h2>
-    <p class="text-center">Esta sección estará disponible próximamente con seguimiento de pedidos.</p>
-  </section>
-
-  <!-- Personaliza tu prenda -->
-  <section id="personaliza" class="p-6 bg-white">
-    <h2 class="text-2xl font-bold text-center mb-4">Personaliza tu prenda</h2>
-    <form class="max-w-xl mx-auto space-y-4">
-      <input type="text" placeholder="Nombre completo" class="w-full border p-2 rounded">
-      <input type="email" placeholder="Correo electrónico" class="w-full border p-2 rounded">
-      <input type="file" class="w-full border p-2 rounded">
-      <select class="w-full border p-2 rounded">
-        <option>Camiseta</option>
-        <option>Gorra</option>
-        <option>Tote Bag</option>
-      </select>
-      <textarea placeholder="Detalles del diseño" class="w-full border p-2 rounded"></textarea>
-      <a href="https://wa.link/ru46tm" target="_blank" class="block bg-red-700 text-white px-4 py-2 text-center rounded">Enviar por WhatsApp</a>
-    </form>
-  </section>
-
-  <!-- Contacto -->
-  <section id="contacto" class="p-6">
-    <h2 class="text-2xl font-bold text-center mb-4">Contacto</h2>
-    <form class="max-w-xl mx-auto space-y-4">
-      <input type="text" placeholder="Nombre" class="w-full border p-2 rounded">
-      <input type="email" placeholder="Correo" class="w-full border p-2 rounded">
-      <textarea placeholder="Mensaje" class="w-full border p-2 rounded"></textarea>
-      <button class="bg-red-700 text-white px-4 py-2 rounded">Enviar</button>
-    </form>
-  </section>
-
-  <!-- Pagos en línea -->
-  <section id="pagos" class="p-6 bg-white">
-    <h2 class="text-2xl font-bold text-center mb-4">Pagos en Línea</h2>
-    <p class="text-center mb-2">Realiza tu pago a través de nuestros métodos autorizados.</p>
-    <div class="flex flex-wrap justify-center gap-4">
-      <a href="#" class="bg-green-600 text-white px-4 py-2 rounded">Nequi</a>
-      <a href="#" class="bg-yellow-500 text-white px-4 py-2 rounded">Bancolombia</a>
-      <a href="#" class="bg-blue-700 text-white px-4 py-2 rounded">Daviplata</a>
-    </div>
-  </section>
-
   <!-- Botón flotante de WhatsApp parpadeante -->
   <a href="https://wa.link/ru46tm" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg parpadea text-xl font-bold">
     📩 Escríbenos por WhatsApp
   </a>
-
-  <!-- Script de redirección al login -->
-  <script>
-    const loginBtn = document.getElementById("loginBtn");
-    loginBtn.addEventListener("click", () => {
-      window.location.href = "login.html";
-    });
-  </script>
 </body>
 </html>
