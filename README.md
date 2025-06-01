@@ -38,37 +38,28 @@
   <!-- Catálogo de productos -->
   <section id="catalogo" class="p-6">
     <h2 class="text-3xl font-semibold text-center mb-6">Catálogo de Productos</h2>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <!-- Producto base -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="catalogo-grid">
       <div class="bg-white p-4 rounded shadow">
         <img src="https://via.placeholder.com/300x300?text=Camiseta" alt="Camiseta" class="w-full mb-2">
         <h3 class="font-bold">Camiseta Pirata</h3>
         <p>$35.000</p>
         <a href="https://wa.link/ru46tm" target="_blank" class="mt-2 inline-block bg-red-700 text-white px-4 py-1 rounded">Pedir</a>
       </div>
-      <!-- 19 productos adicionales -->
-      <!-- Generados con etiquetas similares -->
-      <!-- Usamos imágenes genéricas por ahora -->
-      <!-- Puedes reemplazar el texto y los links -->
-      <!-- PRODUCTOS DINÁMICOS -->
-      <!-- Bucle simulado de productos con nombres variados -->
-      <!-- Aquí solo se listan como ejemplo -->
-      <!-- Se pueden luego reemplazar por un JSON o CMS -->
-      <script>
-        const catalogo = document.querySelector('#catalogo .grid');
-        for(let i=2; i<=20; i++) {
-          const div = document.createElement('div');
-          div.className = "bg-white p-4 rounded shadow";
-          div.innerHTML = `
-            <img src="https://via.placeholder.com/300x300?text=Producto+${i}" alt="Producto ${i}" class="w-full mb-2">
-            <h3 class="font-bold">Producto ${i}</h3>
-            <p>$${20000 + i * 500}</p>
-            <a href="https://wa.link/ru46tm" target="_blank" class="mt-2 inline-block bg-red-700 text-white px-4 py-1 rounded">Pedir</a>
-          `;
-          catalogo.appendChild(div);
-        }
-      </script>
     </div>
+    <script>
+      const catalogo = document.getElementById("catalogo-grid");
+      for(let i=2; i<=20; i++) {
+        const div = document.createElement('div');
+        div.className = "bg-white p-4 rounded shadow";
+        div.innerHTML = `
+          <img src="https://via.placeholder.com/300x300?text=Producto+${i}" alt="Producto ${i}" class="w-full mb-2">
+          <h3 class="font-bold">Producto ${i}</h3>
+          <p>$${20000 + i * 500}</p>
+          <a href="https://wa.link/ru46tm" target="_blank" class="mt-2 inline-block bg-red-700 text-white px-4 py-1 rounded">Pedir</a>
+        `;
+        catalogo.appendChild(div);
+      }
+    </script>
   </section>
 
   <!-- Personaliza tu prenda -->
