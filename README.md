@@ -43,7 +43,10 @@
         <img src="https://via.placeholder.com/300x300?text=Camiseta" alt="Camiseta" class="w-full mb-2">
         <h3 class="font-bold">Camiseta Pirata</h3>
         <p>$35.000</p>
-        <button onclick="agregarAlCarrito('Camiseta Pirata', 35000)" class="bg-blue-700 text-white px-4 py-1 rounded mt-2">Agregar al carrito</button>
+        <div class="flex space-x-2 mt-2">
+          <button onclick="agregarAlCarrito('Camiseta Pirata', 35000)" class="bg-blue-700 text-white px-4 py-1 rounded">Agregar al carrito</button>
+          <a href="p1.html" class="bg-gray-700 text-white px-4 py-1 rounded">Detalles</a>
+        </div>
       </div>
     </div>
     <script>
@@ -68,7 +71,10 @@
             <img src="https://via.placeholder.com/300x300?text=Producto+${i}" alt="${nombre}" class="w-full mb-2">
             <h3 class="font-bold">${nombre}</h3>
             <p>$${precio}</p>
-            <button onclick="agregarAlCarrito('${nombre}', ${precio})" class="bg-blue-700 text-white px-4 py-1 rounded mt-2">Agregar al carrito</button>
+            <div class="flex space-x-2 mt-2">
+              <button onclick="agregarAlCarrito('${nombre}', ${precio})" class="bg-blue-700 text-white px-4 py-1 rounded">Agregar al carrito</button>
+              <a href="p${i}.html" class="bg-gray-700 text-white px-4 py-1 rounded">Detalles</a>
+            </div>
           `;
           catalogo.appendChild(div);
         }
@@ -136,8 +142,7 @@
   <script>
     const loginBtn = document.getElementById("loginBtn");
     loginBtn.addEventListener("click", () => {
-      window.location.href = "[https://jhasjazz.github.io/morganestampados.github.io/login.html)";
-
+      window.location.href = "login.html";
     });
   </script>
 </body>
