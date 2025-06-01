@@ -17,11 +17,11 @@
     }
   </style>
 </head>
-<body class="text-gray-900">
+<body class="text-gray-900 relative">
   <!-- Barra de navegación -->
   <header class="bg-red-700 text-white p-4 shadow-md flex justify-between items-center">
     <h1 class="text-2xl font-bold">Morgan Estampados</h1>
-    <nav class="space-x-4 flex items-center">
+    <nav class="space-x-4 flex items-center relative">
       <a href="#catalogo" class="hover:underline">Inicio</a>
       <a href="#personaliza" class="hover:underline">Personaliza</a>
       <a href="#contacto" class="hover:underline">Contacto</a>
@@ -29,7 +29,16 @@
       <a href="carro.html" class="hover:underline">Carrito</a>
       <a href="#compras" class="hover:underline">Mis Compras</a>
       <button id="loginBtn" class="bg-white text-red-700 px-2 py-1 rounded">Login Google</button>
-      <div id="userCircle" class="hidden w-8 h-8 rounded-full bg-white text-red-700 font-bold flex items-center justify-center"></div>
+
+      <!-- Botón de usuario -->
+      <div id="userCircle" class="hidden w-8 h-8 rounded-full bg-white text-red-700 font-bold flex items-center justify-center cursor-pointer relative">
+        U
+        <!-- Menú desplegable -->
+        <div id="userMenu" class="hidden absolute top-10 right-0 bg-white text-red-700 border rounded shadow z-50">
+          <a href="usuario.html" class="block px-4 py-2 hover:bg-gray-100">Editar usuario</a>
+          <button id="logoutBtn" class="w-full text-left px-4 py-2 hover:bg-gray-100">Cerrar sesión</button>
+        </div>
+      </div>
     </nav>
   </header>
 
@@ -44,69 +53,30 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="catalogo-grid"></div>
   </section>
 
-  <!-- Resto del contenido igual -->
-  <section id="compras" class="p-6 bg-white">
-    <h2 class="text-2xl font-bold text-center mb-4">Compras Realizadas</h2>
-    <p class="text-center">Esta sección estará disponible próximamente con seguimiento de pedidos.</p>
-  </section>
-
-  <section id="personaliza" class="p-6 bg-white">
-    <h2 class="text-2xl font-bold text-center mb-4">Personaliza tu prenda</h2>
-    <form class="max-w-xl mx-auto space-y-4">
-      <input type="text" placeholder="Nombre completo" class="w-full border p-2 rounded">
-      <input type="email" placeholder="Correo electrónico" class="w-full border p-2 rounded">
-      <input type="file" class="w-full border p-2 rounded">
-      <select class="w-full border p-2 rounded">
-        <option>Camiseta</option>
-        <option>Gorra</option>
-        <option>Tote Bag</option>
-      </select>
-      <textarea placeholder="Detalles del diseño" class="w-full border p-2 rounded"></textarea>
-      <a href="https://wa.link/ru46tm" target="_blank" class="block bg-red-700 text-white px-4 py-2 text-center rounded">Enviar por WhatsApp</a>
-    </form>
-  </section>
-
-  <section id="contacto" class="p-6">
-    <h2 class="text-2xl font-bold text-center mb-4">Contacto</h2>
-    <form class="max-w-xl mx-auto space-y-4">
-      <input type="text" placeholder="Nombre" class="w-full border p-2 rounded">
-      <input type="email" placeholder="Correo" class="w-full border p-2 rounded">
-      <textarea placeholder="Mensaje" class="w-full border p-2 rounded"></textarea>
-      <button class="bg-red-700 text-white px-4 py-2 rounded">Enviar</button>
-    </form>
-  </section>
-
-  <section id="pagos" class="p-6 bg-white">
-    <h2 class="text-2xl font-bold text-center mb-4">Pagos en Línea</h2>
-    <p class="text-center mb-2">Realiza tu pago a través de nuestros métodos autorizados.</p>
-    <div class="flex flex-wrap justify-center gap-4">
-      <a href="#" class="bg-green-600 text-white px-4 py-2 rounded">Nequi</a>
-      <a href="#" class="bg-yellow-500 text-white px-4 py-2 rounded">Bancolombia</a>
-      <a href="#" class="bg-blue-700 text-white px-4 py-2 rounded">Daviplata</a>
-    </div>
-  </section>
-
-  <!-- WhatsApp flotante -->
+  <!-- Botón flotante de WhatsApp -->
   <a href="https://wa.link/ru46tm" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg parpadea text-xl font-bold">
     📩 Escríbenos por WhatsApp
   </a>
 
-  <!-- Scripts -->
+  <!-- Firebase y lógica principal -->
   <script>
-    // Firebase Config (REEMPLAZA ESTOS DATOS)
+    // CONFIGURACIÓN DE TU PROYECTO FIREBASE
     const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_AUTH_DOMAIN",
-      projectId: "TU_PROJECT_ID",
-      storageBucket: "TU_STORAGE_BUCKET",
-      messagingSenderId: "TU_MESSAGING_SENDER_ID",
-      appId: "TU_APP_ID"
+      apiKey: "AIzaSyBCwRVaG0-WUaV2SchY00LlpX_VzGCvj8o",
+      authDomain: "morganestampadoslogin.firebaseapp.com",
+      projectId: "morganestampadoslogin",
+      storageBucket: "morganestampadoslogin.firebasestorage.app",
+      messagingSenderId: "807816306056",
+      appId: "1:807816306056:web:ac494752760b365e15ae3d",
+      measurementId: "G-WFSFQLM81S"
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
     const loginBtn = document.getElementById("loginBtn");
     const userCircle = document.getElementById("userCircle");
+    const userMenu = document.getElementById("userMenu");
+    const logoutBtn = document.getElementById("logoutBtn");
 
     loginBtn.addEventListener("click", () => {
       const provider = new firebase.auth.GoogleAuthProvider();
@@ -114,25 +84,25 @@
         .then(result => {
           const correo = result.user.email;
           localStorage.setItem("usuarioLogueado", correo);
-          loginBtn.classList.add("hidden");
-          userCircle.textContent = correo.charAt(0).toUpperCase();
-          userCircle.classList.remove("hidden");
+          mostrarUsuario(correo);
         })
-        .catch(error => {
+        .catch(err => {
           alert("Error al iniciar sesión.");
-          console.error(error);
+          console.error(err);
         });
     });
 
+    function mostrarUsuario(correo) {
+      loginBtn.classList.add("hidden");
+      userCircle.textContent = correo.charAt(0).toUpperCase();
+      userCircle.classList.remove("hidden");
+    }
+
+    // Renderizar usuario si ya está logueado
     document.addEventListener("DOMContentLoaded", () => {
       const correo = localStorage.getItem("usuarioLogueado");
-      if (correo) {
-        loginBtn.classList.add("hidden");
-        userCircle.textContent = correo.charAt(0).toUpperCase();
-        userCircle.classList.remove("hidden");
-      }
+      if (correo) mostrarUsuario(correo);
 
-      // Generar catálogo
       const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
       const catalogo = document.getElementById("catalogo-grid");
 
@@ -189,6 +159,22 @@
         `;
         catalogo.appendChild(div);
       }
+    });
+
+    // Mostrar / ocultar menú del usuario
+    userCircle.addEventListener("click", () => {
+      userMenu.classList.toggle("hidden");
+    });
+
+    // Cerrar sesión y limpiar localStorage
+    logoutBtn.addEventListener("click", () => {
+      auth.signOut().then(() => {
+        localStorage.clear();
+        userCircle.classList.add("hidden");
+        userMenu.classList.add("hidden");
+        loginBtn.classList.remove("hidden");
+        location.reload();
+      });
     });
   </script>
 </body>
